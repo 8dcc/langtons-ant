@@ -7,17 +7,18 @@
 #include <stdio.h>
 #include "SDL.h"
 
+#include "misc.h"
 #include "read_config.h"
 
-#define WINDOW_W 1200		// Window width in pixels
-#define WINDOW_H 750		// Window height in pixels
-
-#define FPS 60				// Will wait 1000ms/FPS between frames
-#define DELAY 50			// Will set this as delay instead of the fps if this value is not 0 and the space is pressed
-
-#define DEBUG_PRINT 0
-
 int main(int argc, char* argv[]) {
+	
+	// Read config file
+	if (read_config() == 1) {
+		printf("Error opening config.cfg\nExiting...\n");
+		return 1;
+	}
+	if (DEBUG_PRINT == 1) printf("Configuration loaded!\n");
+
 	// Start SDL
 	if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO) != 0) {
 		SDL_Log("Unable to start: %s\n", SDL_GetError());
@@ -46,11 +47,6 @@ int main(int argc, char* argv[]) {
 	}
 	if (DEBUG_PRINT == 1) printf("Renderer created!\n\n");
 	
-	if (read_config() == 1) {
-		printf("Error opening config.cfg\nExiting...\n");
-		return 1;
-	}
-
 	printf("Press space to start the simulation.\n");
 
 	/* ------------------------------------------------------------------------------- */
