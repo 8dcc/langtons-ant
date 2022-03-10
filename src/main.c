@@ -13,18 +13,19 @@
 int main(int argc, char* argv[]) {
 	
 	// Read config file
+	clear_colors_array();
 	if (read_config() == 1) {
 		printf("Error opening config.cfg\nExiting...\n");
 		return 1;
 	}
-	if (DEBUG_PRINT == 1) printf("Configuration loaded!\n");
+	if (DEBUG_PRINT) printf("Configuration loaded!\n");
 
 	// Start SDL
 	if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO) != 0) {
 		SDL_Log("Unable to start: %s\n", SDL_GetError());
 		return 1;
 	}
-	if (DEBUG_PRINT == 1) printf("SLD started!\n");
+	if (DEBUG_PRINT) printf("SLD started!\n");
 	
 	// Create window
 	SDL_Window* sdl_window = SDL_CreateWindow("SDL2 test",  // Window name
@@ -34,7 +35,7 @@ int main(int argc, char* argv[]) {
 		SDL_Quit();
 		return 1;
 	}
-	if (DEBUG_PRINT == 1) printf("Window created!\n");
+	if (DEBUG_PRINT) printf("Window created!\n");
 
 	// Create renderer
 	Uint32 render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
@@ -45,7 +46,7 @@ int main(int argc, char* argv[]) {
 		SDL_Quit();
 		return 1;
 	}
-	if (DEBUG_PRINT == 1) printf("Renderer created!\n\n");
+	if (DEBUG_PRINT) printf("Renderer created!\n\n");
 	
 	printf("Press space to start the simulation.\n");
 
@@ -96,8 +97,10 @@ int main(int argc, char* argv[]) {
 			}
 		}
 
+		/* ------------------------------------------------------------------------------- */
+
 		// Clear window
-		SDL_SetRenderDrawColor(sdl_renderer, 0, 0, 0, 255);
+		SDL_SetRenderDrawColor(sdl_renderer, BACKGROUND_R, BACKGROUND_G, BACKGROUND_B, 255);
 		SDL_RenderClear(sdl_renderer);
 
 		// Do something every frame the space is pressed
@@ -115,7 +118,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	// End of the program
-	printf("Reached end of the program!\n");
+	if (DEBUG_PRINT) printf("Reached end of the program!\n");
 	SDL_DestroyRenderer(sdl_renderer);
 	SDL_DestroyWindow(sdl_window);
 	SDL_Quit();
