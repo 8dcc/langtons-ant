@@ -37,14 +37,15 @@ int parse_setting(char setting[], int value) {
 		BACKGROUND_B = value;
 	} else {
 		// For each color get the value, if there is no value set it to 0
-		char string_to_check[8] = "COLOR_";
-		string_to_check[8] = '\0';
-		char string_to_check_low[8] = "color_";
-		string_to_check_low[8] = '\0';
-		for (int n = 0; n < COLOR_NUMBER; n++) {
-			string_to_check[7] = n+48;		// We do this so we get "COLOR_1", "COLOR_2", etc.
-			string_to_check_low[7] = n+48;
-			if (compare_strings(setting, string_to_check) || compare_strings(setting, string_to_check_low)) {
+		char string_to_check_up[10], string_to_check_low[10];
+
+		strncpy(string_to_check_up, "COLOR_0", 10);
+		strncpy(string_to_check_low, "color_0", 10);
+
+		for (int n = 0; n < MAX_COLOR_NUMBER; n++) {
+			string_to_check_up[6] = n+48;		// We do this so we get "COLOR_1", "COLOR_2", etc.
+			string_to_check_low[6] = n+48;
+			if (compare_strings(setting, string_to_check_up) || compare_strings(setting, string_to_check_low)) {
 				COLORS_ARRAY[n] = value;	// Value will be depending on the code colors in the readme
 			}
 		}
