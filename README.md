@@ -30,8 +30,9 @@ Setting         | Description                                                   
 Possible colors for the configuration file. Example:
 
 ```c
-color_1 = 3		// Will set color 1 to Yellow
-color_1 = 5		// Will set color 1 to Light Blue
+color_0 = 1     // Will set color 0 (FIRST) to Red
+color_1 = 3             // Will set color 1 (SECCOND) to Yellow
+color_3 = 5             // Will set color 3 to Light Blue
 ```
 
 Code  | Color       | RGB value
