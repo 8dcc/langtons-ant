@@ -9,6 +9,7 @@
 
 #include "misc.h"
 #include "read_config.h"
+#include "ant.h"
 
 int main(int argc, char* argv[]) {
 	
