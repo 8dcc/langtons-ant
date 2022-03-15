@@ -1,5 +1,5 @@
 /*
- *	https://github.com/r4v10l1
+ *	https://github.com/r4v10l1/langtons-ant-c
  *	Langtons ant simulation made in pure C with SDL2.
  *	Based on https://github.com/r4v10l1/LangtonsAnt
  */
@@ -8,7 +8,7 @@
 #include "SDL.h"
 
 #include "misc.h"
-#include "read_config.h"
+#include "read_config.h"	// For config.cfg
 #include "ant.h"
 
 int main(int argc, char* argv[]) {
