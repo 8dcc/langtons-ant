@@ -2,13 +2,22 @@
 #define DEBUG_SETTINGS 0
 #define MAX_COLOR_NUMBER 9
 
-int WINDOW_W = 1200, WINDOW_H = 750;
-int FPS = 60, DELAY = 50;
-int DEBUG_PRINT = 0;
+// -------------------------------------------------------------------------
+// Default settings
+
+enum colors { BLACK, WHITE, RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, PINK };
+
+int WINDOW_W = 1200, WINDOW_H = 750;						// Window size in pixels
+int CELL_SIZE = 10;											// Size of the squares. In pixels
+int FPS = 60, DELAY = 100;									// FPS used by the program normally vs holding space
+int DEBUG_PRINT = 0;										// Print useful debug information
 
 int COLOR_NUMBER = 2;
-int BACKGROUND_R = 0, BACKGROUND_G = 0, BACKGROUND_B = 0;
-int COLORS_ARRAY[MAX_COLOR_NUMBER];
+int GRID_COLOR = 100;										// As RGB
+int BACKGROUND_R = 5, BACKGROUND_G = 5, BACKGROUND_B = 5;	// As RGB
+int COLORS_ARRAY[MAX_COLOR_NUMBER];							// Will store the colors defined by the user
+
+// -------------------------------------------------------------------------
 
 void clear_colors_array() {
 	for (int n = 0; n < MAX_COLOR_NUMBER; n++) {
@@ -21,6 +30,8 @@ int parse_setting(char setting[], int value) {
 		WINDOW_W = value;
 	} else if (compare_strings(setting, "WINDOW_H") || compare_strings(setting, "window_h")) {
 		WINDOW_H = value;
+	} else if (compare_strings(setting, "CELL_SIZE") || compare_strings(setting, "cell_size")) {
+		CELL_SIZE = value;
 	} else if (compare_strings(setting, "FPS") || compare_strings(setting, "fps")) {
 		FPS = value;
 	} else if (compare_strings(setting, "DELAY") || compare_strings(setting, "delay")) {
@@ -35,6 +46,8 @@ int parse_setting(char setting[], int value) {
 		BACKGROUND_G = value;
 	} else if (compare_strings(setting, "BACKGROUND_B") || compare_strings(setting, "background_b")) {
 		BACKGROUND_B = value;
+	} else if (compare_strings(setting, "GRID_COLOR") || compare_strings(setting, "grid_color")) {
+		GRID_COLOR = value;
 	} else {
 		// For each color get the value, if there is no value set it to 0
 		char string_to_check_up[10], string_to_check_low[10];
@@ -46,7 +59,7 @@ int parse_setting(char setting[], int value) {
 			string_to_check_up[6] = n+48;		// We do this so we get "COLOR_1", "COLOR_2", etc.
 			string_to_check_low[6] = n+48;
 			if (compare_strings(setting, string_to_check_up) || compare_strings(setting, string_to_check_low)) {
-				COLORS_ARRAY[n] = value;	// Value will be depending on the code colors in the readme
+				COLORS_ARRAY[n] = value;		// Value will be depending on the code colors in the readme
 			}
 		}
 	}
