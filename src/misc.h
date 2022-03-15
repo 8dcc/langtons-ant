@@ -1,6 +1,6 @@
 
 // 0 = Not the same
-int compare_strings(char str1[], char str2[]) {
+int compare_strings(const char str1[], const char str2[]) {
 	int cur_pos = 0;
 
 	while (str1[cur_pos] != '\0' && str2[cur_pos] != '\0') {
