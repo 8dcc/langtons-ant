@@ -17,11 +17,12 @@ Setting         | Description                                                  |
 ----------------|--------------------------------------------------------------|----------------
 `WINDOW_W`      | Window width                                                 | 1200
 `WINDOW_H`      | Window height                                                | 750
+`CELL_SIZE`     | Cell size in pixels                                          | 10
 `FPS`           | Frames per seccond when space is not pressed                 | 750
-`DELAY`         | Time that the program will wait when holding the space (ms)  | 50
+`DELAY`         | Time that the program will wait when holding the space (ms)  | 100
 `DEBUG_PRINT`   | Will display debug information if **1**                      | 0
 
-### Ant
+### Colors
 
 Setting         | Description                                                     | Default value
 ----------------|-----------------------------------------------------------------|----------------
@@ -29,6 +30,7 @@ Setting         | Description                                                   
 `BACKGROUND_R`  | Red value used for the background                               | 0
 `BACKGROUND_G`  | Green value used for the background                             | 0
 `BACKGROUND_B`  | Blue value used for the background                              | 0
+`GRID_COLOR`    | Color of the grid if active. RGB (Grayscale)                    | 100
 
 ### Possible colors
 Possible colors for the configuration file.
@@ -39,9 +41,9 @@ The first one (0) will replace the last one, wich is determined by `COLOR_NUMBER
 Example:
 
 ```cfg
-color_0 = 1             # Will set color 0 (FIRST) to Red. Will replace the last one (delends on COLOR_NUMBER).
-color_1 = 3             # Will set color 1 (SECCOND) to Yellow. Will replace Red.
-color_3 = 5             # Will set color 3 to Light Blue. Will replace Yellow.
+color_0 = 1             # Will set color 0 (FIRST) to Black. Will replace the last one (delends on COLOR_NUMBER).
+color_1 = 3             # Will set color 1 (SECCOND) to Red. Will replace Black.
+color_3 = 5             # Will set color 3 to Yellow. Will replace Red.
 ```
 
 Code  | Color       | RGB value
@@ -52,6 +54,6 @@ Code  | Color       | RGB value
 **4** | Orange      | (255,165,0)
 **5** | Yellow      | (255,255,0)
 **6** | Green       | (0,255,0)
-**7** | Dark Blue   | (0,0,255)
+**7** | Blue        | (0,0,255)
 **8** | Purple      | (160,32,240)
 **9** | Pink        | (255,68,204)
