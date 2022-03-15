@@ -1,11 +1,15 @@
-# Langtons ant
-**Langtons ant simulation made in C using SDL2.**
+<div align=center>
+  <h1>Langtons ant</h1>
+  <b>Langtons ant simulation made in C using SDL2.</b><br>
+  Based on <a href="https://github.com/r4v10l1/LangtonsAnt">r4v10l1/LangtonsAnt</a>.
+</div>
 
-Based on [r4v10l1/LangtonsAnt](https://github.com/r4v10l1/LangtonsAnt).
-
----
+## Description
+The program creates a window with SDL2 and renders the langtons ant in real time.
 
 ## Possible settings
+
+Can be edited in `config.cfg`
 
 ### General
 
@@ -27,12 +31,17 @@ Setting         | Description                                                   
 `BACKGROUND_B`  | Blue value used for the background                              | 0
 
 ### Possible colors
-Possible colors for the configuration file. Example:
+Possible colors for the configuration file.
 
-```c
-color_0 = 1     // Will set color 0 (FIRST) to Red
-color_1 = 3             // Will set color 1 (SECCOND) to Yellow
-color_3 = 5             // Will set color 3 to Light Blue
+Each color will replace the last one (2 will replace 1; 1 will replace 0...).
+The first one (0) will replace the last one, wich is determined by `COLOR_NUMBER`.
+
+Example:
+
+```cfg
+color_0 = 1             # Will set color 0 (FIRST) to Red. Will replace the last one (delends on COLOR_NUMBER).
+color_1 = 3             # Will set color 1 (SECCOND) to Yellow. Will replace Red.
+color_3 = 5             # Will set color 3 to Light Blue. Will replace Yellow.
 ```
 
 Code  | Color       | RGB value
