@@ -46,10 +46,12 @@ color_3 = 5             # Will set color 3 to Light Blue. Will replace Yellow.
 
 Code  | Color       | RGB value
 ------|-------------|-------------
-**1** | Red         | (255,0,0)
-**2** | Orange      | (255,165,0)
-**3** | Yellow      | (255,255,0)
-**4** | Green       | (0,255,0)
-**5** | Light Blue  | (112,163,204)
-**6** | Dark Blue   | (0,0,255)
-**7** | Purple      | (160,32,240)
+**1** | Black       | (0,0,0)
+**2** | White       | (255,255,255)
+**3** | Red         | (255,0,0)
+**4** | Orange      | (255,165,0)
+**5** | Yellow      | (255,255,0)
+**6** | Green       | (0,255,0)
+**7** | Dark Blue   | (0,0,255)
+**8** | Purple      | (160,32,240)
+**9** | Pink        | (255,68,204)
