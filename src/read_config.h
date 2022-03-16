@@ -13,7 +13,7 @@ int FPS = 60, DELAY = 100;									// FPS used by the program normally vs holdin
 int DEBUG_PRINT = 0;										// Print useful debug information
 
 int COLOR_NUMBER = 2;
-int GRID_COLOR = 100;										// As RGB
+int GRID_COLOR = 50;										// As RGB
 int BACKGROUND_R = 5, BACKGROUND_G = 5, BACKGROUND_B = 5;	// As RGB
 int COLORS_ARRAY[MAX_COLOR_NUMBER];							// Will store the colors defined by the user
 
