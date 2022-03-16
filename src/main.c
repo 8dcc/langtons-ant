@@ -49,12 +49,16 @@ int main(int argc, char* argv[]) {
 	}
 	if (DEBUG_PRINT) printf("Renderer created!\n\n");
 	
+	start_ant();
+	if (DEBUG_PRINT) printf("Ant created!\n\n");
+
 	printf("Press space to start the simulation.\n");
 
 	/* ------------------------------------------------------------------------------- */
 
 	// Main loop
-	int running = 1, space_pressed = 0; 
+	int running = 1, space_pressed = 0;
+	int grid_active = 0;
 
 	SDL_Event sdl_event;	// Create an event for the keys and shit
 	while (running == 1) {
@@ -72,6 +76,9 @@ int main(int argc, char* argv[]) {
 							if (DEBUG_PRINT == 1) {
 								printf("Esc key pressed!\n");
 							}
+							break;
+						case SDL_SCANCODE_G:
+							grid_active = !grid_active;
 							break;
 						case SDL_SCANCODE_SPACE:
 							space_pressed = 1;
@@ -109,6 +116,9 @@ int main(int argc, char* argv[]) {
 			// Do shit
 		}
 		
+		// Draw grid if active
+		if (grid_active) draw_grid(sdl_renderer);
+
 		// Send to renderer
 		SDL_RenderPresent(sdl_renderer);
 		if (space_pressed && DELAY) {
