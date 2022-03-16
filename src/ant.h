@@ -1,23 +1,24 @@
 
 enum directions { UP, DOWN, LEFT, RIGHT };
 
+// Start at the center of the screen, facing up
 // x_pos, y_pos, facing_dir
-int ANT_STATE[3] = {  };
+int ANT_STATE[3];
 
 // TODO: Will need to store the currents ant position in an array in main.c
 void move_forward(int facing_direction, int ant_position_array[]) {
 	switch (facing_direction) {
 		case UP:
-			ant_position_array[1]++;
+			ANT_STATE[1]++;
 			break;
 		case DOWN:
-			ant_position_array[1]--;
+			ANT_STATE[1]--;
 			break;
 		case LEFT:
-			ant_position_array[0]--;
+			ANT_STATE[0]--;
 			break;
 		case RIGHT:
-			ant_position_array[0]++;
+			ANT_STATE[0]++;
 			break;
 		default:
 			break;
@@ -73,6 +74,12 @@ void draw_grid(SDL_Renderer* renderer) {
 	for (int y_grid = CELL_SIZE; y_grid < WINDOW_H; y_grid = y_grid + CELL_SIZE) {
 		SDL_RenderDrawLine(renderer, 0, y_grid, WINDOW_W, y_grid);
 	}
+}
+
+void start_ant() {
+	ANT_STATE[0] = WINDOW_W/CELL_SIZE;
+	ANT_STATE[1] = WINDOW_H/CELL_SIZE; 
+	ANT_STATE[2] = UP;
 }
 
 // TODO: Function to return rotation based on current color? or just main.c
