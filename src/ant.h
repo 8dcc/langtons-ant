@@ -1,7 +1,6 @@
 
 enum directions { UP, DOWN, LEFT, RIGHT };
 
-// Start at the center of the screen, facing up
 // x_pos, y_pos, facing_dir
 int ANT_STATE[3];
 
@@ -77,6 +76,7 @@ void draw_grid(SDL_Renderer* renderer) {
 }
 
 void start_ant() {
+	// Start at the center of the screen, facing up
 	ANT_STATE[0] = WINDOW_W/CELL_SIZE;
 	ANT_STATE[1] = WINDOW_H/CELL_SIZE; 
 	ANT_STATE[2] = UP;
