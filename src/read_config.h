@@ -39,7 +39,13 @@ int parse_setting(char setting[], int value) {
 	} else if (compare_strings(setting, "DEBUG_PRINT") || compare_strings(setting, "debug_print")) {
 		DEBUG_PRINT = value;
 	} else if (compare_strings(setting, "COLOR_NUMBER") || compare_strings(setting, "color_number")) {
-		COLOR_NUMBER = value;
+		if (COLOR_NUMBER < 2) {
+			COLOR_NUMBER = 2;
+		} else if (COLOR_NUMBER > 9) {
+			COLOR_NUMBER = 9;
+		} else {
+			COLOR_NUMBER = value;
+		}
 	} else if (compare_strings(setting, "BACKGROUND_R") || compare_strings(setting, "background_r")) {
 		BACKGROUND_R = value;
 	} else if (compare_strings(setting, "BACKGROUND_G") || compare_strings(setting, "background_g")) {
