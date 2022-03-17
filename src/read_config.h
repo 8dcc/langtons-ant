@@ -5,7 +5,7 @@
 // -------------------------------------------------------------------------
 // Default settings
 
-enum colors { BLACK, WHITE, RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, PINK };
+enum colors { BACKGROUND, BLACK, WHITE, RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, PINK };
 
 int WINDOW_W = 1200, WINDOW_H = 750;						// Window size in pixels
 int CELL_SIZE = 10;											// Size of the squares. In pixels
@@ -16,12 +16,14 @@ int COLOR_NUMBER = 2;
 int GRID_COLOR = 50;										// As RGB
 int BACKGROUND_R = 5, BACKGROUND_G = 5, BACKGROUND_B = 5;	// As RGB
 int COLORS_ARRAY[MAX_COLOR_NUMBER];							// Will store the colors defined by the user
+int ROTATIONS_ARRAY[MAX_COLOR_NUMBER];						// Will store the rotation that the ant should do when encountered X color
 
 // -------------------------------------------------------------------------
 
-void clear_colors_array() {
+void clear_config_arrays() {
 	for (int n = 0; n < MAX_COLOR_NUMBER; n++) {
-		COLORS_ARRAY[n] = n;
+		COLORS_ARRAY[n] = n+1;
+		ROTATIONS_ARRAY[n] = n % 2;
 	}
 }
 
@@ -56,16 +58,23 @@ int parse_setting(char setting[], int value) {
 		GRID_COLOR = value;
 	} else {
 		// For each color get the value, if there is no value set it to 0
-		char string_to_check_up[10], string_to_check_low[10];
+		char color_check_u[20], color_check_l[20];
+		char rotation_check_u[20], rotation_check_l[20];
 
-		strncpy(string_to_check_up, "COLOR_0", 10);
-		strncpy(string_to_check_low, "color_0", 10);
+		strncpy(color_check_u, "COLOR_0", 10);
+		strncpy(color_check_l, "color_0", 10);
+		strncpy(rotation_check_u, "ROTATION_0", 10);
+		strncpy(rotation_check_l, "rotation_0", 10);
 
 		for (int n = 0; n < MAX_COLOR_NUMBER; n++) {
-			string_to_check_up[6] = n+48;		// We do this so we get "COLOR_1", "COLOR_2", etc.
-			string_to_check_low[6] = n+48;
-			if (compare_strings(setting, string_to_check_up) || compare_strings(setting, string_to_check_low)) {
+			color_check_u[6] = n+48;		// We do this so we get "COLOR_1", "COLOR_2", etc.
+			color_check_l[6] = n+48;
+			rotation_check_u[9] = n+48;
+			rotation_check_l[9] = n+48;
+			if (compare_strings(setting, color_check_u) || compare_strings(setting, color_check_l)) {
 				COLORS_ARRAY[n] = value;		// Value will be depending on the code colors in the readme
+			} else if (compare_strings(setting, rotation_check_u) || compare_strings(setting, rotation_check_l)) {
+				ROTATIONS_ARRAY[n] = value;
 			}
 		}
 	}
