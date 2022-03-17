@@ -4,6 +4,15 @@
   Based on <a href="https://github.com/r4v10l1/LangtonsAnt">r4v10l1/LangtonsAnt</a>.
 </div>
 
+# Table of contents
+1. [Description](https://github.com/r4v10l1/langtons-ant-c#Description)
+2. [Possible settings](https://github.com/r4v10l1/langtons-ant-c#Possible-settings)
+    - [General](https://github.com/r4v10l1/langtons-ant-c#General)
+    - [Colors](https://github.com/r4v10l1/langtons-ant-c#Colors)
+    - [Color list](https://github.com/r4v10l1/langtons-ant-c#Possible-colors)
+4. [TODO](https://github.com/r4v10l1/langtons-ant-c#TODO)
+
+
 ## Description
 The program creates a window with SDL2 and renders the langtons ant in real time.
 
@@ -57,3 +66,6 @@ Code  | Color       | RGB value
 **7** | Blue        | (0,0,255)
 **8** | Purple      | (160,32,240)
 **9** | Pink        | (255,68,204)
+
+## TODO
+- [ ] Multiple ants with Mouse1
