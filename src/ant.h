@@ -1,23 +1,24 @@
 
 enum directions { UP, DOWN, LEFT, RIGHT };
+enum rotations {CW, CCW};
 
 // y_pos, x_pos, facing_dir
 int ANT_STATE[3];
 
 // TODO: Will need to store the currents ant position in an array in main.c
-void move_forward(int facing_direction) {
-	switch (facing_direction) {
+void move_forward() {
+	switch (ANT_STATE[3]) {
 		case UP:
-			if (ANT_STATE[1] < WINDOW_W/CELL_SIZE) ANT_STATE[1]++;
+			if (ANT_STATE[0] < WINDOW_H/CELL_SIZE) ANT_STATE[0]++;
 			break;
 		case DOWN:
-			if (ANT_STATE[1] > 0) ANT_STATE[1]--;
-			break;
-		case LEFT:
 			if (ANT_STATE[0] > 0) ANT_STATE[0]--;
 			break;
+		case LEFT:
+			if (ANT_STATE[1] > 0) ANT_STATE[1]--;
+			break;
 		case RIGHT:
-			if (ANT_STATE[0] < WINDOW_H/CELL_SIZE) ANT_STATE[0]++;
+			if (ANT_STATE[1] < WINDOW_W/CELL_SIZE) ANT_STATE[1]++;
 			break;
 		default:
 			break;
@@ -25,9 +26,9 @@ void move_forward(int facing_direction) {
 }
 
 // rotation: 0 = ClockWise; 1 = CounterClockWise
-int rotate(int rotation, int facing_direction) {
+int rotate(int rotation) {
 	if (rotation) {		// CW
-		switch (facing_direction) {
+		switch (ANT_STATE[3]) {
 			case UP:
 				return RIGHT;
 				break;
@@ -44,7 +45,7 @@ int rotate(int rotation, int facing_direction) {
 				break;
 		}
 	} else {			// CCW
-		switch (facing_direction) {
+		switch (ANT_STATE[3]) {
 			case UP:
 				return LEFT;
 				break;
@@ -82,38 +83,44 @@ void start_ant() {
 	ANT_STATE[2] = UP;
 }
 
-int move_ant(int cell_array[]) {
-	// Based on color, 0 is ClockWise, 1 is CounterClockWise.
-	// Currently turns CW if the color number is even, CCW otherwise.
-	int current_color = cell_array[ANT_STATE[0], ANT_STATE[1]];
 
-	if (current_color % 2 == 0) {	// Number is even
-		ANT_STATE[3] = rotate(0, ANT_STATE[3]);
-	} else {
-		ANT_STATE[3] = rotate(1, ANT_STATE[3]);
-	}
+/*
+ * In order to access the 2d array, we pass the x and y size and then refer to the array as
+ * 		cell_array[desiredx * x_size + desiredy] = ... ;
+ * Credit to:
+ *  https://stackoverflow.com/a/546891
+ *  http://c-faq.com/aryptr/ary2dfunc2.html
+ */
+int move_ant(int* cell_array, int y_size, int x_size) {
+	int current_color = cell_array[ANT_STATE[1] * x_size + ANT_STATE[0]];
+	int color_in_array = 0;		// The position in the COLORS_ARRAY[] of the current color. See next for loop.
 
-	// Change the color of the current cell based on the previous one
-	if (current_color == 0) {
-		cell_array[ANT_STATE[0], ANT_STATE[1]] = COLORS_ARRAY[0];
-	} else {
-		for (int n = 0; n < MAX_COLOR_NUMBER; n++) {
-			if (current_color = COLORS_ARRAY[n]) {
-				if (n+1 >= COLOR_NUMBER) {
-					cell_array[ANT_STATE[0], ANT_STATE[1]] = COLORS_ARRAY[0];
-				} else {
-					cell_array[ANT_STATE[0], ANT_STATE[1]] = COLORS_ARRAY[n+1];
-				}
-				break;
-			}
+	// We loop through the COLORS_ARRAY until we find the position of our color
+	for (int n = 0; n < MAX_COLOR_NUMBER; n++) {
+		if (current_color == COLORS_ARRAY[n]) {
+			color_in_array = n;
+			break;
 		}
 	}
 
+	// Will check the rotation asigned to the current color, so if we encounter X color, we need to aply its rotation
+	// which is specified in the config.cfg.
+	ANT_STATE[3] = rotate(ROTATIONS_ARRAY[color_in_array]);
+
+	//TODO: THE ANT STOPS AT THE 4TH COLOR
+	// Change the color of the current cell based on the previous one
+	if (current_color == BACKGROUND) {
+		cell_array[ANT_STATE[0] * x_size + ANT_STATE[1]] = COLORS_ARRAY[0];
+	} else {
+		if (color_in_array+1 >= COLOR_NUMBER) {
+			cell_array[ANT_STATE[0] * x_size + ANT_STATE[1]] = COLORS_ARRAY[0];
+		} else {
+			cell_array[ANT_STATE[0] * x_size + ANT_STATE[1]] = COLORS_ARRAY[color_in_array+1];
+		}
+	}
 
 	// Move forward once
-	move_forward(ANT_STATE[3]);
-
-	printf("Moved ant! [%d, %d]\n", ANT_STATE[0], ANT_STATE[1]);
+	move_forward();
 
 	return 0;
 }
