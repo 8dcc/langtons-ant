@@ -41,6 +41,18 @@ Setting         | Description                                                   
 `BACKGROUND_B`  | Blue value used for the background                              | 0
 `GRID_COLOR`    | Color of the grid if active. RGB (Grayscale)                    | 100
 
+### Possible rotations
+`0` for *ClockWise* and `1` for *CounterClockWise*.
+```cfg
+# 0 - CW
+# 1 - CCW
+rotation_0 = 0
+rotation_1 = 1
+rotation_2 = 0
+rotation_3 = 1
+...
+```
+
 ### Possible colors
 Possible colors for the configuration file.
 
