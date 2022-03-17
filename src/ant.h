@@ -102,7 +102,6 @@ int move_ant(int* cell_array, int y_size, int x_size) {
 		}
 	}
 
-	//TODO: THE ANT STOPS AT THE 4TH COLOR
 	// Change the color of the current cell based on the previous one
 	if (current_color == BACKGROUND) {
 		cell_array[ANT_STATE[0] * x_size + ANT_STATE[1]] = COLORS_ARRAY[0];
