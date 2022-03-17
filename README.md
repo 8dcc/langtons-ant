@@ -6,6 +6,7 @@
 
 # Table of contents
 1. [Description](https://github.com/r4v10l1/langtons-ant-c#Description)
+1. [Keys](https://github.com/r4v10l1/langtons-ant-c#Keys)
 2. [Possible settings](https://github.com/r4v10l1/langtons-ant-c#Possible-settings)
     - [General](https://github.com/r4v10l1/langtons-ant-c#General)
     - [Colors](https://github.com/r4v10l1/langtons-ant-c#Colors)
@@ -16,12 +17,17 @@
 ## Description
 The program creates a window with SDL2 and renders the langtons ant in real time.
 
-## Possible settings
+## Keys
+Key        | Description
+-----------|------------------------
+Esc        | Exit the program
+Space      | **Toggle** the simulation
+G          | Toggle grid
 
+## Possible settings
 Can be edited in `config.cfg`
 
 ### General
-
 Setting         | Description                                                  | Default value
 ----------------|--------------------------------------------------------------|----------------
 `WINDOW_W`      | Window width                                                 | 1200
@@ -32,7 +38,6 @@ Setting         | Description                                                  |
 `DEBUG_PRINT`   | Will display debug information if **1**                      | 0
 
 ### Colors
-
 Setting         | Description                                                     | Default value
 ----------------|-----------------------------------------------------------------|----------------
 `COLOR_NUMBER`  | Number of color asociations that the program will use (Max 9)   | 2
