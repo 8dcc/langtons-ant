@@ -14,7 +14,7 @@
 int main(int argc, char* argv[]) {
 	
 	// Read config file
-	clear_colors_array();
+	clear_config_arrays();
 	if (read_config() == 1) {
 		printf("Error opening config.cfg\nExiting...\n");
 		return 1;
@@ -61,7 +61,7 @@ int main(int argc, char* argv[]) {
 	// Clear the array
 	for (int y = 0; y < WINDOW_H/CELL_SIZE; y++) {
 		for (int x = 0; x < WINDOW_W/CELL_SIZE; x++) {
-			cell_grid[y][x] = 0;
+			cell_grid[y][x] = BACKGROUND;
 		}
 	}
 	
@@ -126,7 +126,7 @@ int main(int argc, char* argv[]) {
 
 		// Do something every frame the space is pressed
 		if (space_pressed) {
-			move_ant(*cell_grid);	// I don't know why it needs a pointer thing but I get a warning otherwise
+			move_ant(&cell_grid[0][0], WINDOW_H/CELL_SIZE, WINDOW_W/CELL_SIZE);	// See comment before this funtion in ant.h
 		}
 	
 		// Draw the cells
@@ -134,7 +134,7 @@ int main(int argc, char* argv[]) {
 			for (int x = 0; x < WINDOW_W/CELL_SIZE; x++) {
 				// Only draw colors if the cell is not empty (background)
 				if (cell_grid[y][x] > 0) {
-					if (rgb_from_color(cell_grid[y][x], rgb_buffer)) printf("There was an error while parsing RGB values...\n");
+					if (rgb_from_color(cell_grid[y][x], rgb_buffer) && DEBUG_PRINT) printf("There was an error while parsing RGB values...\n");
 					SDL_SetRenderDrawColor(sdl_renderer, rgb_buffer[0], rgb_buffer[1], rgb_buffer[2], 255);
 					current_cell.x = x * CELL_SIZE;
 					current_cell.y = y * CELL_SIZE;
@@ -147,7 +147,7 @@ int main(int argc, char* argv[]) {
 
 		// Draw the ant
 		// TODO
-		SDL_SetRenderDrawColor(sdl_renderer, 200, 0, 0, 255);
+		SDL_SetRenderDrawColor(sdl_renderer, 150, 0, 0, 255);
 		current_cell.x = ANT_STATE[1] * CELL_SIZE + 1;
 		current_cell.y = ANT_STATE[0] * CELL_SIZE + 1;
 		current_cell.w = CELL_SIZE - 1;
