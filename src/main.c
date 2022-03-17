@@ -94,12 +94,13 @@ int main(int argc, char* argv[]) {
 							grid_active = !grid_active;
 							break;
 						case SDL_SCANCODE_SPACE:
-							space_pressed = 1;
+							space_pressed = !space_pressed;
 							break;
 						default:
 							break;
 					}
 					break;
+				/*
 				case SDL_KEYUP:
 					// Check the released key
 					switch (sdl_event.key.keysym.scancode) {
@@ -113,6 +114,7 @@ int main(int argc, char* argv[]) {
 							break;
 					}
 					break;
+				*/
 				default:
 					break;
 			}
@@ -142,8 +144,11 @@ int main(int argc, char* argv[]) {
 					current_cell.h = CELL_SIZE;
 					SDL_RenderFillRect(sdl_renderer, &current_cell);
 				}
+				if ( DEBUG_PRINT == 2 && y > WINDOW_H/CELL_SIZE/2 - 5 && y < WINDOW_H/CELL_SIZE/2 + 5 ) printf("%d", cell_grid[y][x]);
 			}
+			if ( DEBUG_PRINT == 2 && y > WINDOW_H/CELL_SIZE/2 - 5 && y < WINDOW_H/CELL_SIZE/2 + 5 ) printf("\n");
 		}
+		if (DEBUG_PRINT == 2) printf("------------------------------------------------------------------\n");
 
 		// Draw the ant
 		// TODO
