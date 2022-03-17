@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
 	start_ant();
 	if (DEBUG_PRINT) printf("Ant created!\n\n");
 
-	printf("Press space to start the simulation.\n");
+	printf("Press space to toggle the simulation.\n");
 
 	/* ------------------------------------------------------------------------------- */
 
