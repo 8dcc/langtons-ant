@@ -34,17 +34,17 @@ Setting         | Description                                                  |
 `WINDOW_H`      | Window height                                                | 750
 `CELL_SIZE`     | Cell size in pixels                                          | 10
 `FPS`           | Frames per seccond when space is not pressed                 | 750
-`DELAY`         | Time that the program will wait when holding the space (ms)  | 100
+`DELAY`         | Time that the program will wait when holding the space (ms)  | 50
 `DEBUG_PRINT`   | Will display debug information if **1**                      | 0
 
 ### Colors
 Setting         | Description                                                     | Default value
 ----------------|-----------------------------------------------------------------|----------------
 `COLOR_NUMBER`  | Number of color asociations that the program will use (Max 9)   | 2
-`BACKGROUND_R`  | Red value used for the background                               | 0
-`BACKGROUND_G`  | Green value used for the background                             | 0
-`BACKGROUND_B`  | Blue value used for the background                              | 0
-`GRID_COLOR`    | Color of the grid if active. RGB (Grayscale)                    | 100
+`BACKGROUND_R`  | Red value used for the background                               | 20
+`BACKGROUND_G`  | Green value used for the background                             | 20
+`BACKGROUND_B`  | Blue value used for the background                              | 22
+`GRID_COLOR`    | Color of the grid if active. RGB (Grayscale)                    | 40
 
 ### Possible rotations
 `0` for *ClockWise* and `1` for *CounterClockWise*.
