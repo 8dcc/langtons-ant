@@ -5,7 +5,6 @@ enum rotations {CW, CCW};
 // y_pos, x_pos, facing_dir
 int ANT_STATE[3];
 
-// TODO: Will need to store the currents ant position in an array in main.c
 void move_forward() {
 	switch (ANT_STATE[3]) {
 		case UP:
@@ -92,7 +91,7 @@ void start_ant() {
  *  http://c-faq.com/aryptr/ary2dfunc2.html
  */
 int move_ant(int* cell_array, int y_size, int x_size) {
-	int current_color = cell_array[ANT_STATE[1] * x_size + ANT_STATE[0]];
+	int current_color = cell_array[ANT_STATE[0] * x_size + ANT_STATE[1]];
 	int color_in_array = 0;		// The position in the COLORS_ARRAY[] of the current color. See next for loop.
 
 	// We loop through the COLORS_ARRAY until we find the position of our color
@@ -102,10 +101,6 @@ int move_ant(int* cell_array, int y_size, int x_size) {
 			break;
 		}
 	}
-
-	// Will check the rotation asigned to the current color, so if we encounter X color, we need to aply its rotation
-	// which is specified in the config.cfg.
-	ANT_STATE[3] = rotate(ROTATIONS_ARRAY[color_in_array]);
 
 	//TODO: THE ANT STOPS AT THE 4TH COLOR
 	// Change the color of the current cell based on the previous one
@@ -118,6 +113,11 @@ int move_ant(int* cell_array, int y_size, int x_size) {
 			cell_array[ANT_STATE[0] * x_size + ANT_STATE[1]] = COLORS_ARRAY[color_in_array+1];
 		}
 	}
+	if (DEBUG_PRINT) printf("Moved to: %3d|%3d\n", ANT_STATE[0], ANT_STATE[1]);
+
+	// Will check the rotation asigned to the current color, so if we encounter X color, we need to aply its rotation
+	// which is specified in the config.cfg.
+	ANT_STATE[3] = rotate(ROTATIONS_ARRAY[color_in_array]);
 
 	// Move forward once
 	move_forward();
