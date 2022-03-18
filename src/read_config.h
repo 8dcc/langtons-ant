@@ -7,16 +7,16 @@
 
 enum colors { BACKGROUND, BLACK, WHITE, RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, PINK };
 
-int WINDOW_W = 1200, WINDOW_H = 750;						// Window size in pixels
-int CELL_SIZE = 10;											// Size of the squares. In pixels
-int FPS = 60, DELAY = 100;									// FPS used by the program normally vs holding space
-int DEBUG_PRINT = 0;										// Print useful debug information
+int WINDOW_W = 750, WINDOW_H = 750;								// Window size in pixels
+int CELL_SIZE = 10;												// Size of the squares. In pixels
+int FPS = 60, DELAY = 50;										// FPS used by the program normally vs holding space
+int DEBUG_PRINT = 0;											// Print useful debug information
 
 int COLOR_NUMBER = 2;
-int GRID_COLOR = 50;										// As RGB
-int BACKGROUND_R = 5, BACKGROUND_G = 5, BACKGROUND_B = 5;	// As RGB
-int COLORS_ARRAY[MAX_COLOR_NUMBER];							// Will store the colors defined by the user
-int ROTATIONS_ARRAY[MAX_COLOR_NUMBER];						// Will store the rotation that the ant should do when encountered X color
+int GRID_COLOR = 40;											// As RGB
+int BACKGROUND_R = 20, BACKGROUND_G = 20, BACKGROUND_B = 22;	// As RGB
+int COLORS_ARRAY[MAX_COLOR_NUMBER];						 		// Will store the colors defined by the user
+int ROTATIONS_ARRAY[MAX_COLOR_NUMBER];							// Will store the rotation that the ant should do when encountered X color
 
 // -------------------------------------------------------------------------
 
@@ -61,10 +61,10 @@ int parse_setting(char setting[], int value) {
 		char color_check_u[20], color_check_l[20];
 		char rotation_check_u[20], rotation_check_l[20];
 
-		strncpy(color_check_u, "COLOR_0", 10);
-		strncpy(color_check_l, "color_0", 10);
-		strncpy(rotation_check_u, "ROTATION_0", 10);
-		strncpy(rotation_check_l, "rotation_0", 10);
+		strncpy(color_check_u, "COLOR_0", 20);
+		strncpy(color_check_l, "color_0", 20);
+		strncpy(rotation_check_u, "ROTATION_0", 20);
+		strncpy(rotation_check_l, "rotation_0", 20);
 
 		for (int n = 0; n < MAX_COLOR_NUMBER; n++) {
 			color_check_u[6] = n+48;		// We do this so we get "COLOR_1", "COLOR_2", etc.
