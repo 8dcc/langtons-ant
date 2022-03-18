@@ -28,14 +28,14 @@ G          | Toggle grid
 Can be edited in `config.cfg`
 
 ### General
-Setting         | Description                                                  | Default value
-----------------|--------------------------------------------------------------|----------------
-`WINDOW_W`      | Window width                                                 | 1200
-`WINDOW_H`      | Window height                                                | 750
-`CELL_SIZE`     | Cell size in pixels                                          | 10
-`FPS`           | Frames per seccond when space is not pressed                 | 750
-`DELAY`         | Time that the program will wait when holding the space (ms)  | 50
-`DEBUG_PRINT`   | Will display debug information if **1**                      | 0
+Setting         | Description                                                                | Default value
+----------------|----------------------------------------------------------------------------|----------------
+`WINDOW_W`      | Window width                                                               | 1200
+`WINDOW_H`      | Window height                                                              | 750
+`CELL_SIZE`     | Cell size in pixels make sure WINDOW_W and WINDOW_H can be divided by it.  | 10
+`FPS`           | Frames per seccond when space is not pressed                               | 750
+`DELAY`         | Time that the program will wait when holding the space (ms)                | 50
+`DEBUG_PRINT`   | Will display debug information if **1**                                    | 0
 
 ### Colors
 Setting         | Description                                                     | Default value
