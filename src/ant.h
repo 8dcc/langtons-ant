@@ -26,7 +26,7 @@ void move_forward() {
 
 // rotation: 0 = ClockWise; 1 = CounterClockWise
 int rotate(int rotation) {
-	if (rotation) {		// CW
+	if (rotation == CW) {
 		switch (ANT_STATE[3]) {
 			case UP:
 				return RIGHT;
@@ -43,7 +43,7 @@ int rotate(int rotation) {
 			default:
 				break;
 		}
-	} else {			// CCW
+	} else {
 		switch (ANT_STATE[3]) {
 			case UP:
 				return LEFT;
@@ -62,7 +62,8 @@ int rotate(int rotation) {
 		}
 	}
 
-	return 1;
+	printf("\nError getting the rotation.\n");
+	return -1;
 }
 
 void draw_grid(SDL_Renderer* renderer) {
@@ -90,7 +91,7 @@ void start_ant() {
  *  https://stackoverflow.com/a/546891
  *  http://c-faq.com/aryptr/ary2dfunc2.html
  */
-int move_ant(int* cell_array, int y_size, int x_size) {
+int move_ant(int* cell_array, int x_size) {
 	int current_color = cell_array[ANT_STATE[0] * x_size + ANT_STATE[1]];
 	int color_in_array = 0;		// The position in the COLORS_ARRAY[] of the current color. See next for loop.
 
@@ -104,7 +105,7 @@ int move_ant(int* cell_array, int y_size, int x_size) {
 
 	// Change the color of the current cell based on the previous one
 	if (current_color == BACKGROUND) {
-		cell_array[ANT_STATE[0] * x_size + ANT_STATE[1]] = COLORS_ARRAY[0];
+		cell_array[ANT_STATE[0] * x_size + ANT_STATE[1]] = COLORS_ARRAY[1];
 	} else {
 		if (color_in_array+1 >= COLOR_NUMBER) {
 			cell_array[ANT_STATE[0] * x_size + ANT_STATE[1]] = COLORS_ARRAY[0];
@@ -112,7 +113,7 @@ int move_ant(int* cell_array, int y_size, int x_size) {
 			cell_array[ANT_STATE[0] * x_size + ANT_STATE[1]] = COLORS_ARRAY[color_in_array+1];
 		}
 	}
-	if (DEBUG_PRINT) printf("Moved to: %3d|%3d\n", ANT_STATE[0], ANT_STATE[1]);
+	if (DEBUG_PRINT == 2) printf("Moved to: %3d|%3d\n", ANT_STATE[0], ANT_STATE[1]);
 
 	// Will check the rotation asigned to the current color, so if we encounter X color, we need to aply its rotation
 	// which is specified in the config.cfg.
