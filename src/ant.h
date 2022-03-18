@@ -8,7 +8,7 @@ int ANT_STATE[3];
 void move_forward() {
 	switch (ANT_STATE[3]) {
 		case UP:
-			if (ANT_STATE[0] < WINDOW_H/CELL_SIZE) ANT_STATE[0]++;
+			if (ANT_STATE[0] < WINDOW_H/CELL_SIZE-1) ANT_STATE[0]++;
 			break;
 		case DOWN:
 			if (ANT_STATE[0] > 0) ANT_STATE[0]--;
@@ -17,7 +17,7 @@ void move_forward() {
 			if (ANT_STATE[1] > 0) ANT_STATE[1]--;
 			break;
 		case RIGHT:
-			if (ANT_STATE[1] < WINDOW_W/CELL_SIZE) ANT_STATE[1]++;
+			if (ANT_STATE[1] < WINDOW_W/CELL_SIZE-1) ANT_STATE[1]++;
 			break;
 		default:
 			break;
