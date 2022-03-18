@@ -18,11 +18,12 @@
 The program creates a window with SDL2 and renders the langtons ant in real time.
 
 ## Keys
-Key        | Description
------------|------------------------
-Esc        | Exit the program
-Space      | **Toggle** the simulation
-G          | Toggle grid
+Key          | Description
+-------------|------------------------
+Esc          | Exit the program
+Space        | **Toggle** the simulation
+Right Arrow  | Step the simulation
+G            | Toggle grid
 
 ## Possible settings
 Can be edited in `config.cfg`
