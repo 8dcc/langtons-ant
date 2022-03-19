@@ -87,3 +87,6 @@ Code  | Color       | RGB value
 
 ## TODO
 - [ ] Multiple ants with Mouse1
+- [ ] Kill the ant when it reaches the border
+- [ ] Kill the ant when 2 are in the same position
+- [ ] Be able to save the state of the cells
