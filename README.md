@@ -18,12 +18,12 @@
 The program creates a window with SDL2 and renders the langtons ant in real time.
 
 ## Keys
-Key          | Description
--------------|------------------------
-Esc          | Exit the program
-Space        | **Toggle** the simulation
-Right Arrow  | Step the simulation
-G            | Toggle grid
+Key                     | Description
+------------------------|------------------------
+<kbd>Esc</kbd>          | Exit the program
+<kbd>Space</kbd>        | **Toggle** the simulation
+<kbd>Right Arrow</kbd>  | Step the simulation
+<kbd>G</kbd>            | Toggle grid
 
 ## Possible settings
 Can be edited in `config.cfg`
@@ -33,10 +33,18 @@ Setting         | Description                                                   
 ----------------|----------------------------------------------------------------------------|----------------
 `WINDOW_W`      | Window width                                                               | 1200
 `WINDOW_H`      | Window height                                                              | 750
-`CELL_SIZE`     | Cell size in pixels make sure WINDOW_W and WINDOW_H can be divided by it.  | 10
+`CELL_SIZE`     | Cell size in pixels make sure WINDOW_W and WINDOW_H can be divided by it  | 10
 `FPS`           | Frames per seccond when space is not pressed                               | 750
 `DELAY`         | Time that the program will wait when holding the space (ms)                | 50
-`DEBUG_PRINT`   | Will display debug information if **1**                                    | 0
+`DEBUG_PRINT`   | Verbose level. Check verbose levels for more info.                         | 1
+
+#### Verbose levels
+Verbose | Description
+--------|--------------------------------------------------------------------------------
+`0`     | Nothing will be printed
+`1`     | Steps and basic information will be printed
+`2`     | Information about the program's state, and the ants position will be printed
+`3`     | A lot of information like the array state will be printed
 
 ### Colors
 Setting         | Description                                                     | Default value
