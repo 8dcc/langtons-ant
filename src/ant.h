@@ -8,16 +8,20 @@ int ANT_STATE[3];
 void move_forward() {
 	switch (ANT_STATE[3]) {
 		case UP:
-			if (ANT_STATE[0] < WINDOW_H/CELL_SIZE-1) ANT_STATE[0]++;
+			if (ANT_STATE[0] < WINDOW_H/CELL_SIZE) ANT_STATE[0]++;
+			else ANT_STATE[0] = 0;
 			break;
 		case DOWN:
-			if (ANT_STATE[0] > 0) ANT_STATE[0]--;
+			if (ANT_STATE[0] > 1) ANT_STATE[0]--;
+			else ANT_STATE[0] = WINDOW_H/CELL_SIZE;
 			break;
 		case LEFT:
-			if (ANT_STATE[1] > 0) ANT_STATE[1]--;
+			if (ANT_STATE[1] > 1) ANT_STATE[1]--;
+			else ANT_STATE[1] = WINDOW_W/CELL_SIZE;
 			break;
 		case RIGHT:
-			if (ANT_STATE[1] < WINDOW_W/CELL_SIZE-1) ANT_STATE[1]++;
+			if (ANT_STATE[1] < WINDOW_W/CELL_SIZE) ANT_STATE[1]++;
+			else ANT_STATE[1] = 0;
 			break;
 		default:
 			break;
@@ -113,7 +117,6 @@ int move_ant(int* cell_array, int x_size) {
 			cell_array[ANT_STATE[0] * x_size + ANT_STATE[1]] = COLORS_ARRAY[color_in_array+1];
 		}
 	}
-	if (DEBUG_PRINT == 2) printf("Moved to: %3d|%3d\n", ANT_STATE[0], ANT_STATE[1]);
 
 	// Will check the rotation asigned to the current color, so if we encounter X color, we need to aply its rotation
 	// which is specified in the config.cfg.
