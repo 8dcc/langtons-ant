@@ -20,7 +20,7 @@ if [[ $1 == "" ]]; then
 fi
 
 # Compile the file
-gcc -o $OUTPUT_FILE $1 $SDL_FLAGS
+gcc -Wall -o $OUTPUT_FILE $1 $SDL_FLAGS
 
 # If the second arg is run then run after compiling
 if [[ $2 == "run" ]]; then
