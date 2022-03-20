@@ -10,7 +10,7 @@ enum colors { BACKGROUND, BLACK, WHITE, RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE
 int WINDOW_W = 750, WINDOW_H = 750;								// Window size in pixels
 int CELL_SIZE = 10;												// Size of the squares. In pixels
 int FPS = 60, DELAY = 50;										// FPS used by the program normally vs holding space
-int DEBUG_PRINT = 0;											// Print useful debug information
+int DEBUG_PRINT = 1;											// Print useful debug information
 
 int COLOR_NUMBER = 2;
 int GRID_COLOR = 40;											// As RGB
