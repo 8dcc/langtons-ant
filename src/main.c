@@ -82,42 +82,18 @@ int main(int argc, char* argv[]) {
 		// Events
 		while (SDL_PollEvent(&sdl_event)) {
 			switch (sdl_event.type) {
-				case SDL_QUIT:  // Window is closed
+				case SDL_QUIT:
 					running = 0;
 					break;
 				case SDL_KEYDOWN:
-					// Check the pressed key
-					switch (sdl_event.key.keysym.scancode) {
-						case SDL_SCANCODE_ESCAPE:
-							running = 0;
-							break;
-						case SDL_SCANCODE_G:
-							grid_active = !grid_active;
-							break;
-						case SDL_SCANCODE_SPACE:
-							space_pressed = !space_pressed;
-							break;
-						case SDL_SCANCODE_RIGHT:
-							r_arrow_pressed = 1;
-						default:
-							break;
+					switch (sdl_event.key.keysym.scancode) {	// Check the pressed key
+						case SDL_SCANCODE_ESCAPE:	running = 0;					break;
+						case SDL_SCANCODE_G:		grid_active = !grid_active;		break;
+						case SDL_SCANCODE_SPACE:	space_pressed = !space_pressed;	break;
+						case SDL_SCANCODE_RIGHT:	r_arrow_pressed = 1;			break;
+						default:					break;
 					}
 					break;
-				/*
-				case SDL_KEYUP:
-					// Check the released key
-					switch (sdl_event.key.keysym.scancode) {
-						case SDL_SCANCODE_SPACE:
-							space_pressed = 0;
-							if (DEBUG_PRINT == 1) {
-								printf("Space key released!\n");
-							}
-							break;
-						default:
-							break;
-					}
-					break;
-				*/
 				default:
 					break;
 			}
@@ -137,9 +113,7 @@ int main(int argc, char* argv[]) {
 			if (DEBUG_PRINT == 1 || DEBUG_PRINT == 2) {
 				number_of_steps++;
 				printf("\rSteps: %d", number_of_steps);
-				if (DEBUG_PRINT == 2) {
-					printf(" | Ant1: %d-%d ", ANT_STATE[0], ANT_STATE[1]);
-				}
+				if (DEBUG_PRINT == 2) printf(" | Ant1: %d-%d ", ANT_STATE[0], ANT_STATE[1]);
 				fflush(stdout);
 			}
 		}
