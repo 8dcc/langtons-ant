@@ -98,3 +98,4 @@ Code  | Color       | RGB value
 - [X] Make the ant go to the other side of the window when reaching a border instead of killing it
 - [ ] Kill the ant when 2 are in the same position
 - [ ] Be able to save the state of the cells
+- [X] Reduce size of switches
