@@ -32,37 +32,19 @@ void move_forward() {
 int rotate(int rotation) {
 	if (rotation == CW) {
 		switch (ANT_STATE[3]) {
-			case UP:
-				return RIGHT;
-				break;
-			case DOWN:
-				return LEFT;
-				break;
-			case LEFT:
-				return UP;
-				break;
-			case RIGHT:
-				return DOWN;
-				break;
-			default:
-				break;
+			case UP:		return RIGHT;	break;
+			case DOWN:		return LEFT;	break;
+			case LEFT:		return UP;		break;
+			case RIGHT:		return DOWN;	break;
+			default:		break;
 		}
 	} else {
 		switch (ANT_STATE[3]) {
-			case UP:
-				return LEFT;
-				break;
-			case DOWN:
-				return RIGHT;
-				break;
-			case LEFT:
-				return DOWN;
-				break;
-			case RIGHT:
-				return UP;
-				break;
-			default:
-				break;
+			case UP:		return LEFT;	break;
+			case DOWN:		return RIGHT;	break;
+			case LEFT:		return DOWN;	break;
+			case RIGHT:		return UP;		break;
+			default:		break;
 		}
 	}
 
