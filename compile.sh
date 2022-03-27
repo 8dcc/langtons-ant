@@ -12,7 +12,7 @@ if [[ $(command -v sdl2-config) == "" ]]; then
 fi
 
 SDL_FLAGS=$(sdl2-config --cflags --libs)
-OUTPUT_FILE="langtons-ant.o"  # Change with project name
+OUTPUT_FILE="langtons-ant.out"  # Change with project name
 
 if [[ $1 == "" ]]; then
 	echo "No arguments. Please enter a file. Exiting..."
