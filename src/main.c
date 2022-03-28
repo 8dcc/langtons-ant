@@ -50,7 +50,7 @@ int main(int argc, char* argv[]) {
 	if (DEBUG_PRINT >= 2) printf("Renderer created!\n");
 	
 	start_ant();
-	if (DEBUG_PRINT >= 2) printf("Ant created!\n");
+	if (DEBUG_PRINT >= 2) printf("Ant0 created!\n");
 
 	if (DEBUG_PRINT >= 1) printf("Press space to toggle the simulation.\n\n");
 
@@ -107,13 +107,21 @@ int main(int argc, char* argv[]) {
 
 		// Do something every frame the space is pressed
 		if (space_pressed || r_arrow_pressed) {
-			move_ant(&cell_grid[0][0], WINDOW_W/CELL_SIZE);	// See comment before this funtion in ant.h
+			for (int n = 0; n < MAX_ANT_NUMBER; n++) {
+				if (ANTS_ARRAY[n].yp >= 0 && ANTS_ARRAY[n].xp >= 0) {
+					move_ant(&cell_grid[0][0], WINDOW_W/CELL_SIZE, n);	// See comment before this funtion in ant.h
+				}
+			}
 
 			// Show the number of steps in the terminal
 			if (DEBUG_PRINT == 1 || DEBUG_PRINT == 2) {
 				number_of_steps++;
-				printf("\rSteps: %d", number_of_steps);
-				if (DEBUG_PRINT == 2) printf(" | Ant1: %d-%d ", ANT_STATE[0], ANT_STATE[1]);
+				printf("\rSteps: %d ", number_of_steps);
+				if (DEBUG_PRINT == 2) { 
+					for (int n = 0; n < MAX_ANT_NUMBER; n++) {
+						if (ANTS_ARRAY[n].yp >= 0 && ANTS_ARRAY[n].xp >= 0) printf("| Ant%d: %d-%d ", n, ANTS_ARRAY[n].yp, ANTS_ARRAY[n].xp);
+					}
+				}
 				fflush(stdout);
 			}
 		}
@@ -141,12 +149,16 @@ int main(int argc, char* argv[]) {
 		if (DEBUG_PRINT >= 3) printf("------------------------------------------------------------------\n");
 
 		// Draw the ant
-		SDL_SetRenderDrawColor(sdl_renderer, 150, 0, 0, 255);
-		current_cell.x = ANT_STATE[1] * CELL_SIZE + 1;
-		current_cell.y = ANT_STATE[0] * CELL_SIZE + 1;
-		current_cell.w = CELL_SIZE - 2;
-		current_cell.h = CELL_SIZE - 2;
-		SDL_RenderFillRect(sdl_renderer, &current_cell);
+		for (int n = 0; n < MAX_ANT_NUMBER; n++) {
+			if (ANTS_ARRAY[n].yp >= 0 && ANTS_ARRAY[n].xp >= 0) {
+				SDL_SetRenderDrawColor(sdl_renderer, 150, 0, 0, 255);
+				current_cell.x = ANTS_ARRAY[n].xp * CELL_SIZE + 1;
+				current_cell.y = ANTS_ARRAY[n].yp * CELL_SIZE + 1;
+				current_cell.w = CELL_SIZE - 2;
+				current_cell.h = CELL_SIZE - 2;
+				SDL_RenderFillRect(sdl_renderer, &current_cell);
+			}
+		}
 
 		// Draw grid if active
 		if (grid_active) draw_grid(sdl_renderer);
