@@ -1,6 +1,6 @@
 
 enum directions { UP, DOWN, LEFT, RIGHT };
-enum rotations {CW, CCW};
+enum rotations { CW, CCW, U_TURN, NO_ROTATION };
 
 // y_pos, x_pos, facing_dir
 int ANT_STATE[3];
@@ -28,24 +28,40 @@ void move_forward() {
 	}
 }
 
-// rotation: 0 = ClockWise; 1 = CounterClockWise
-int rotate(int rotation) {
+/* 
+ * Rotations:
+ * 		0 = ClockWise
+ * 		1 = CounterClockWise
+ * 		2 = U turn (Reverse rotation)
+ * 		3 = No rotation
+ */
+int rotate(int rotation, int facing_direction) {
 	if (rotation == CW) {
-		switch (ANT_STATE[3]) {
+		switch (facing_direction) {
 			case UP:		return RIGHT;	break;
 			case DOWN:		return LEFT;	break;
 			case LEFT:		return UP;		break;
 			case RIGHT:		return DOWN;	break;
 			default:		break;
 		}
-	} else {
-		switch (ANT_STATE[3]) {
+	} else if (rotation == CCW) {
+		switch (facing_direction) {
 			case UP:		return LEFT;	break;
 			case DOWN:		return RIGHT;	break;
 			case LEFT:		return DOWN;	break;
 			case RIGHT:		return UP;		break;
 			default:		break;
 		}
+	} else if (rotation == U_TURN) {
+		switch (facing_direction) {
+			case UP:		return DOWN;	break;
+			case DOWN:		return UP;		break;
+			case LEFT:		return RIGHT;	break;
+			case RIGHT:		return LEFT;	break;
+			default:		break;
+		}
+	} else {	// NO_ROTATION or unknown value
+		return facing_direction;
 	}
 
 	printf("\nError getting the rotation.\n");
@@ -102,7 +118,7 @@ int move_ant(int* cell_array, int x_size) {
 
 	// Will check the rotation asigned to the current color, so if we encounter X color, we need to aply its rotation
 	// which is specified in the config.cfg.
-	ANT_STATE[3] = rotate(ROTATIONS_ARRAY[color_in_array]);
+	ANT_STATE[3] = rotate(ROTATIONS_ARRAY[color_in_array], ANT_STATE[3]);
 
 	// Move forward once
 	move_forward();
