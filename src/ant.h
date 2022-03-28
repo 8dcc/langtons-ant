@@ -1,33 +1,42 @@
+#define MAX_ANT_NUMBER 20
 
 enum directions { UP, DOWN, LEFT, RIGHT };
 enum rotations { CW, CCW, U_TURN, NO_ROTATION };
 
-// y_pos, x_pos, facing_dir
-int ANT_STATE[3];
+typedef struct ANT {
+	int yp;			// Y position
+	int xp;			// X position
+	int rotation;	// Check the readme or the enum for rotations
+} ant;
 
-void move_forward() {
-	switch (ANT_STATE[3]) {
+ant ANTS_ARRAY[MAX_ANT_NUMBER];
+
+/* ------------------------------------------------------------------------------- */
+
+void move_forward(int ant_i) {		// Ant index
+	switch (ANTS_ARRAY[ant_i].rotation) {
 		case UP:
-			if (ANT_STATE[0] > 0) ANT_STATE[0]--;
-			else ANT_STATE[0] = WINDOW_H/CELL_SIZE-1;
+			if (ANTS_ARRAY[ant_i].yp > 0) ANTS_ARRAY[ant_i].yp--;
+			else ANTS_ARRAY[ant_i].yp = WINDOW_H/CELL_SIZE-1;
 			break;
 		case DOWN:
-			if (ANT_STATE[0] < WINDOW_H/CELL_SIZE-1) ANT_STATE[0]++;
-			else ANT_STATE[0] = 0;
+			if (ANTS_ARRAY[ant_i].yp < WINDOW_H/CELL_SIZE-1) ANTS_ARRAY[ant_i].yp++;
+			else ANTS_ARRAY[ant_i].yp = 0;
 			break;
 		case LEFT:
-			if (ANT_STATE[1] > 0) ANT_STATE[1]--;
-			else ANT_STATE[1] = WINDOW_W/CELL_SIZE-1;
+			if (ANTS_ARRAY[ant_i].xp > 0) ANTS_ARRAY[ant_i].xp--;
+			else ANTS_ARRAY[ant_i].xp = WINDOW_W/CELL_SIZE-1;
 			break;
 		case RIGHT:
-			if (ANT_STATE[1] < WINDOW_W/CELL_SIZE-1) ANT_STATE[1]++;
-			else ANT_STATE[1] = 0;
+			if (ANTS_ARRAY[ant_i].xp < WINDOW_W/CELL_SIZE-1) ANTS_ARRAY[ant_i].xp++;
+			else ANTS_ARRAY[ant_i].xp = 0;
 			break;
 		default:
 			break;
 	}
 }
 
+/* ------------------------------------------------------------------------------- */
 /* 
  * Rotations:
  * 		0 = ClockWise
@@ -68,6 +77,8 @@ int rotate(int rotation, int facing_direction) {
 	return -1;
 }
 
+/* ------------------------------------------------------------------------------- */
+
 void draw_grid(SDL_Renderer* renderer) {
 	SDL_SetRenderDrawColor(renderer, GRID_COLOR, GRID_COLOR, GRID_COLOR, 255);
 	for (int x_grid = CELL_SIZE; x_grid < WINDOW_W; x_grid = x_grid + CELL_SIZE) {
@@ -80,12 +91,18 @@ void draw_grid(SDL_Renderer* renderer) {
 
 void start_ant() {
 	// Start at the center of the screen, facing up
-	ANT_STATE[0] = WINDOW_H/CELL_SIZE / 2;
-	ANT_STATE[1] = WINDOW_W/CELL_SIZE / 2; 
-	ANT_STATE[2] = UP;
+	ANTS_ARRAY[0].yp = WINDOW_H/CELL_SIZE / 2;
+	ANTS_ARRAY[0].xp = WINDOW_W/CELL_SIZE / 2; 
+	ANTS_ARRAY[0].rotation = UP;
+
+	for (int n = 1; n < MAX_ANT_NUMBER; n++) {
+		ANTS_ARRAY[n].yp = -1;
+		ANTS_ARRAY[n].xp = -1; 
+		ANTS_ARRAY[n].rotation = -1;
+	}
 }
 
-
+/* ------------------------------------------------------------------------------- */
 /*
  * In order to access the 2d array, we pass the x and y size and then refer to the array as
  * 		cell_array[desiredx * x_size + desiredy] = ... ;
@@ -93,8 +110,8 @@ void start_ant() {
  *  https://stackoverflow.com/a/546891
  *  http://c-faq.com/aryptr/ary2dfunc2.html
  */
-int move_ant(int* cell_array, int x_size) {
-	int current_color = cell_array[ANT_STATE[0] * x_size + ANT_STATE[1]];
+int move_ant(int* cell_array, int x_size, int ant_i) {
+	int current_color = cell_array[ANTS_ARRAY[ant_i].yp * x_size + ANTS_ARRAY[ant_i].xp];
 	int color_in_array = 0;		// The position in the COLORS_ARRAY[] of the current color. See next for loop.
 
 	// We loop through the COLORS_ARRAY until we find the position of our color
@@ -107,24 +124,26 @@ int move_ant(int* cell_array, int x_size) {
 
 	// Change the color of the current cell based on the previous one
 	if (current_color == BACKGROUND) {
-		cell_array[ANT_STATE[0] * x_size + ANT_STATE[1]] = COLORS_ARRAY[1];
+		cell_array[ANTS_ARRAY[ant_i].yp * x_size + ANTS_ARRAY[ant_i].xp] = COLORS_ARRAY[1];
 	} else {
 		if (color_in_array+1 >= COLOR_NUMBER) {
-			cell_array[ANT_STATE[0] * x_size + ANT_STATE[1]] = COLORS_ARRAY[0];
+			cell_array[ANTS_ARRAY[ant_i].yp * x_size + ANTS_ARRAY[ant_i].xp] = COLORS_ARRAY[0];
 		} else {
-			cell_array[ANT_STATE[0] * x_size + ANT_STATE[1]] = COLORS_ARRAY[color_in_array+1];
+			cell_array[ANTS_ARRAY[ant_i].yp * x_size + ANTS_ARRAY[ant_i].xp] = COLORS_ARRAY[color_in_array+1];
 		}
 	}
 
 	// Will check the rotation asigned to the current color, so if we encounter X color, we need to aply its rotation
 	// which is specified in the config.cfg.
-	ANT_STATE[3] = rotate(ROTATIONS_ARRAY[color_in_array], ANT_STATE[3]);
+	ANTS_ARRAY[ant_i].rotation = rotate(ROTATIONS_ARRAY[color_in_array], ANTS_ARRAY[ant_i].rotation);
 
 	// Move forward once
-	move_forward();
+	move_forward(ant_i);
 
 	return 0;
 }
+
+/* ------------------------------------------------------------------------------- */
 
 // Given a color and an array, will write the RGB values of that color to the array
 int rgb_from_color(int color, int rgb_buffer[]) {
@@ -179,5 +198,3 @@ int rgb_from_color(int color, int rgb_buffer[]) {
 			break;
 	}
 }
-
-
