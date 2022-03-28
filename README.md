@@ -56,14 +56,23 @@ Setting         | Description                                                   
 `GRID_COLOR`    | Color of the grid if active. RGB (Grayscale)                    | 40
 
 ### Possible rotations
-`0` for *ClockWise* and `1` for *CounterClockWise*.
+Number | Constant name | Description
+-------|---------------|----------------------
+`0`    | `CW`          | Rotate right (*ClockWise*)
+`1`    | `CCW`         | Rotate left (*CounterClockWise*)
+`2`    | `U_TURN`      | Invert rotation
+`3`    | `NO_ROTATION` | Don't change the rotation
+
+*Keep in mind that constant names are only used in the code and can't be used as values for the configuration file.*
+
 ```cfg
-# 0 - CW
-# 1 - CCW
+# Will rotate right on the color on position 0, left on the color 1 and 3,
+# will invert the rotation on color 2, and will not turn on color 4. 
 rotation_0 = 0
 rotation_1 = 1
-rotation_2 = 0
+rotation_2 = 2
 rotation_3 = 1
+rotation_4 = 3
 ...
 ```
 
@@ -99,3 +108,6 @@ Code  | Color       | RGB value
 - [ ] Kill the ant when 2 are in the same position
 - [ ] Be able to save the state of the cells
 - [X] Reduce size of switches
+- [X] Add more than 2 rotations (Now 4)
+- [ ] Change `read_config.h` so you can use more than 9 colors / color positions
+- [ ] Read `colors.cfg` (For example) to change the colors instead of function in the code.
