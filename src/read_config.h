@@ -38,7 +38,8 @@ int parse_setting(char setting[], int value) {
 		FPS = value;
 	} else if (compare_strings(setting, "DELAY") || compare_strings(setting, "delay")) {
 		DELAY = value;
-	} else if (compare_strings(setting, "DEBUG_PRINT") || compare_strings(setting, "debug_print")) {
+	} else if (compare_strings(setting, "DEBUG_PRINT") || compare_strings(setting, "debug_print") ||
+		  compare_strings(setting, "VERBOSE") || compare_strings(setting, "verbose")) {
 		DEBUG_PRINT = value;
 	} else if (compare_strings(setting, "COLOR_NUMBER") || compare_strings(setting, "color_number")) {
 		if (COLOR_NUMBER < 2) {
