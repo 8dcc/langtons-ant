@@ -33,10 +33,10 @@ Setting         | Description                                                   
 ----------------|----------------------------------------------------------------------------|----------------
 `WINDOW_W`      | Window width                                                               | 1200
 `WINDOW_H`      | Window height                                                              | 750
-`CELL_SIZE`     | Cell size in pixels make sure WINDOW_W and WINDOW_H can be divided by it  | 10
+`CELL_SIZE`     | Cell size in pixels make sure WINDOW_W and WINDOW_H can be divided by it   | 10
 `FPS`           | Frames per seccond when space is not pressed                               | 750
 `DELAY`         | Time that the program will wait when holding the space (ms)                | 50
-`DEBUG_PRINT`   | Verbose level. Check verbose levels for more info.                         | 1
+`VERBOSE`       | Also `DEBUG_PRINT`. Verbose level. Check verbose levels for more info      | 1
 
 #### Verbose levels
 Verbose | Description
