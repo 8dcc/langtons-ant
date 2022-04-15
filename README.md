@@ -5,14 +5,14 @@
 </div>
 
 # Table of contents
-1. [Description](https://github.com/r4v10l1/langtons-ant-c#Description)
-1. [Keys](https://github.com/r4v10l1/langtons-ant-c#Keys)
-2. [Possible settings](https://github.com/r4v10l1/langtons-ant-c#Possible-settings)
-    - [General](https://github.com/r4v10l1/langtons-ant-c#General)
-    - [Colors](https://github.com/r4v10l1/langtons-ant-c#Colors)
-    - [Color list](https://github.com/r4v10l1/langtons-ant-c#Possible-colors)
-4. [TODO](https://github.com/r4v10l1/langtons-ant-c#TODO)
-
+1. [Description](#Description)
+2. [Keys](#Keys)
+3. [Possible settings](#Possible-settings)
+    - [General](#General)
+    - [Colors](#Colors)
+    - [Color list](#Possible-colors)
+4. [TODO](#TODO)
+5. [Screenshots](#Screenshots)
 
 ## Description
 The program creates a window with SDL2 and renders the langtons ant in real time.
@@ -111,3 +111,8 @@ Code  | Color       | RGB value
 - [X] Add more than 2 rotations (Now 4)
 - [ ] Change `read_config.h` so you can use more than 9 colors / color positions
 - [ ] Read `colors.cfg` (For example) to change the colors instead of function in the code.
+
+## Screenshots
+![Screenshot 1](images/la-1.png)
+![Screenshot 2](images/la-2.png)
+![Screenshot 3](images/la-3.png)
