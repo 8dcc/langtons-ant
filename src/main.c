@@ -26,7 +26,7 @@ int main(int argc, char* argv[]) {
 		SDL_Log("Unable to start: %s\n", SDL_GetError());
 		return 1;
 	}
-	if (DEBUG_PRINT >= 2) printf("SLD started!\n");
+	if (DEBUG_PRINT >= 2) printf("SDL started!\n");
 	
 	// Create window
 	SDL_Window* sdl_window = SDL_CreateWindow("Langton's ant",
