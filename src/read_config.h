@@ -1,106 +1,84 @@
-#define CONFIG_BUFFER_SIZE 255
-#define DEBUG_SETTINGS 0
-#define MAX_COLOR_NUMBER 9
-
-// -------------------------------------------------------------------------
-// Default settings
-
-enum colors { BACKGROUND, BLACK, WHITE, RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, PINK };
-
-int WINDOW_W = 750, WINDOW_H = 750;								// Window size in pixels
-int CELL_SIZE = 10;												// Size of the squares. In pixels
-int FPS = 60, DELAY = 50;										// FPS used by the program normally vs holding space
-int DEBUG_PRINT = 1;											// Print useful debug information
-
-int COLOR_NUMBER = 2;
-int GRID_COLOR = 40;											// As RGB
-int BACKGROUND_R = 20, BACKGROUND_G = 20, BACKGROUND_B = 22;	// As RGB
-int COLORS_ARRAY[MAX_COLOR_NUMBER];						 		// Will store the colors defined by the user
-int ROTATIONS_ARRAY[MAX_COLOR_NUMBER];							// Will store the rotation that the ant should do when encountered X color
-
-// -------------------------------------------------------------------------
 
 void clear_config_arrays() {
-	for (int n = 0; n < MAX_COLOR_NUMBER; n++) {
-		COLORS_ARRAY[n] = n+1;
-		ROTATIONS_ARRAY[n] = n % 2;
-	}
+    for (int n = 0; n < MAX_COLOR_NUMBER; n++) {
+        COLORS_ARRAY[n]    = n + 1;
+        ROTATIONS_ARRAY[n] = n % 2;
+    }
+}
+
+void stolower(char* s) {
+    for (int i = 0; s[i] != '\0'; i++)
+        s[i] = tolower(s[i]);
 }
 
 int parse_setting(char setting[], int value) {
-	if (!strcmp(setting, "WINDOW_W") || !strcmp(setting, "window_w")) {
-		WINDOW_W = value;
-	} else if (!strcmp(setting, "WINDOW_H") || !strcmp(setting, "window_h")) {
-		WINDOW_H = value;
-	} else if (!strcmp(setting, "CELL_SIZE") || !strcmp(setting, "cell_size")) {
-		CELL_SIZE = value;
-	} else if (!strcmp(setting, "FPS") || !strcmp(setting, "fps")) {
-		FPS = value;
-	} else if (!strcmp(setting, "DELAY") || !strcmp(setting, "delay")) {
-		DELAY = value;
-	} else if (!strcmp(setting, "DEBUG_PRINT") || !strcmp(setting, "debug_print") ||
-		  !strcmp(setting, "VERBOSE") || !strcmp(setting, "verbose")) {
-		DEBUG_PRINT = value;
-	} else if (!strcmp(setting, "COLOR_NUMBER") || !strcmp(setting, "color_number")) {
-		if (COLOR_NUMBER < 2) {
-			COLOR_NUMBER = 2;
-		} else if (COLOR_NUMBER > 9) {
-			COLOR_NUMBER = 9;
-		} else {
-			COLOR_NUMBER = value;
-		}
-	} else if (!strcmp(setting, "BACKGROUND_R") || !strcmp(setting, "background_r")) {
-		BACKGROUND_R = value;
-	} else if (!strcmp(setting, "BACKGROUND_G") || !strcmp(setting, "background_g")) {
-		BACKGROUND_G = value;
-	} else if (!strcmp(setting, "BACKGROUND_B") || !strcmp(setting, "background_b")) {
-		BACKGROUND_B = value;
-	} else if (!strcmp(setting, "GRID_COLOR") || !strcmp(setting, "grid_color")) {
-		GRID_COLOR = value;
-	} else {
-		// For each color get the value, if there is no value set it to 0
-		char color_check_u[20], color_check_l[20];
-		char rotation_check_u[20], rotation_check_l[20];
+    stolower(setting);
 
-		strncpy(color_check_u, "COLOR_0", 20);
-		strncpy(color_check_l, "color_0", 20);
-		strncpy(rotation_check_u, "ROTATION_0", 20);
-		strncpy(rotation_check_l, "rotation_0", 20);
+    if (!strcmp(setting, "window_w")) {
+        WINDOW_W = value;
+    } else if (!strcmp(setting, "window_h")) {
+        WINDOW_H = value;
+    } else if (!strcmp(setting, "cell_size")) {
+        CELL_SIZE = value;
+    } else if (!strcmp(setting, "fps")) {
+        FPS = value;
+    } else if (!strcmp(setting, "delay")) {
+        DELAY = value;
+    } else if (!strcmp(setting, "color_number")) {
+        if (COLOR_NUMBER < 2)
+            COLOR_NUMBER = 2;
+        else if (COLOR_NUMBER > 9)
+            COLOR_NUMBER = 9;
+        else
+            COLOR_NUMBER = value;
+    } else if (!strcmp(setting, "background_r")) {
+        BACKGROUND_R = value;
+    } else if (!strcmp(setting, "background_g")) {
+        BACKGROUND_G = value;
+    } else if (!strcmp(setting, "background_b")) {
+        BACKGROUND_B = value;
+    } else if (!strcmp(setting, "grid_color")) {
+        GRID_COLOR = value;
+    } else {
+        // For each color get the value, if there is no value set it to 0
+        char color_check[]    = "color_0";
+        char rotation_check[] = "rotation_0";
 
-		for (int n = 0; n < MAX_COLOR_NUMBER; n++) {
-			color_check_u[6] = n+48;		// We do this so we get "COLOR_1", "COLOR_2", etc.
-			color_check_l[6] = n+48;
-			rotation_check_u[9] = n+48;
-			rotation_check_l[9] = n+48;
-			if (!strcmp(setting, color_check_u) || !strcmp(setting, color_check_l)) {
-				COLORS_ARRAY[n] = value;		// Value will be depending on the code colors in the readme
-			} else if (!strcmp(setting, rotation_check_u) || !strcmp(setting, rotation_check_l)) {
-				ROTATIONS_ARRAY[n] = value;
-			}
-		}
-	}
+        for (int n = 0; n < MAX_COLOR_NUMBER; n++) {
+            // We do this so we get "COLOR_1", "COLOR_2", etc.
+            color_check[6]    = n + '0';
+            rotation_check[9] = n + '0';
 
-	return 0;
+            // Value will be depending on the code colors in the readme
+            if (!strcmp(setting, color_check))
+                COLORS_ARRAY[n] = value;
+            else if (!strcmp(setting, rotation_check))
+                ROTATIONS_ARRAY[n] = value;
+        }
+    }
+
+    return 0;
 }
 
 int read_config() {
-	char line[CONFIG_BUFFER_SIZE], setting[CONFIG_BUFFER_SIZE];
-	int value = -1;
-	FILE * config_file;
+    char line[CONFIG_BUFFER_SIZE], setting[CONFIG_BUFFER_SIZE];
+    int value = 0;
+    FILE* config_file;
 
-	config_file = fopen("config.cfg", "r");
+    config_file = fopen("config.cfg", "r");
 
-	if (config_file == NULL) return 1;
+    if (!config_file)
+        return 1;
 
-	while ( fgets(line, sizeof(line), config_file) ) {
-		sscanf(line, "%s = %d", setting, &value);
-		if (setting[0] != '#') {	// Ignore comments
-			if (DEBUG_SETTINGS) printf("Found setting: %10s | %d\n", setting, value);
-			parse_setting(setting, value);
-		}
-	}
+    while (fgets(line, sizeof(line), config_file)) {
+        sscanf(line, "%s = %d", setting, &value);
 
-	fclose(config_file);
-	return 0;
+        // Ignore comments
+        if (setting[0] != '#')
+            parse_setting(setting, value);
+    }
+
+    fclose(config_file);
+    return 0;
 }
 
