@@ -145,13 +145,12 @@ int move_ant(int* cell_array, int x_size, int ant_i) {
         cell_array[ANTS_ARRAY[ant_i].yp * x_size + ANTS_ARRAY[ant_i].xp] =
           COLORS_ARRAY[1];
     } else {
-        if (color_in_array + 1 >= COLOR_NUMBER) {
+        if (color_in_array + 1 >= COLOR_NUMBER)
             cell_array[ANTS_ARRAY[ant_i].yp * x_size + ANTS_ARRAY[ant_i].xp] =
               COLORS_ARRAY[0];
-        } else {
+        else
             cell_array[ANTS_ARRAY[ant_i].yp * x_size + ANTS_ARRAY[ant_i].xp] =
               COLORS_ARRAY[color_in_array + 1];
-        }
     }
 
     // Will check the rotation asigned to the current color, so if we encounter X
