@@ -113,6 +113,6 @@ Code  | Color       | RGB value
 - [ ] Read `colors.cfg` (For example) to change the colors instead of function in the code.
 
 ## Screenshots
-![Screenshot 1](images/la-1.png)
-![Screenshot 2](images/la-2.png)
-![Screenshot 3](images/la-3.png)
+![Screenshot 1](https://user-images.githubusercontent.com/29655971/201499266-fbcebd8f-de94-41e5-8672-8fcd0a59973a.png)
+![Screenshot 2](https://user-images.githubusercontent.com/29655971/201499271-cf7e11ab-8e8b-4ee1-bec2-2ad59014c357.png)
+![Screenshot 3](https://user-images.githubusercontent.com/29655971/201499279-f12a6d21-39b9-4592-af05-0d102e7c913d.png)
