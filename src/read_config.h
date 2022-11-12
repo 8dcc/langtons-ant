@@ -28,20 +28,20 @@ void clear_config_arrays() {
 }
 
 int parse_setting(char setting[], int value) {
-	if (compare_strings(setting, "WINDOW_W") || compare_strings(setting, "window_w")) {
+	if (!strcmp(setting, "WINDOW_W") || !strcmp(setting, "window_w")) {
 		WINDOW_W = value;
-	} else if (compare_strings(setting, "WINDOW_H") || compare_strings(setting, "window_h")) {
+	} else if (!strcmp(setting, "WINDOW_H") || !strcmp(setting, "window_h")) {
 		WINDOW_H = value;
-	} else if (compare_strings(setting, "CELL_SIZE") || compare_strings(setting, "cell_size")) {
+	} else if (!strcmp(setting, "CELL_SIZE") || !strcmp(setting, "cell_size")) {
 		CELL_SIZE = value;
-	} else if (compare_strings(setting, "FPS") || compare_strings(setting, "fps")) {
+	} else if (!strcmp(setting, "FPS") || !strcmp(setting, "fps")) {
 		FPS = value;
-	} else if (compare_strings(setting, "DELAY") || compare_strings(setting, "delay")) {
+	} else if (!strcmp(setting, "DELAY") || !strcmp(setting, "delay")) {
 		DELAY = value;
-	} else if (compare_strings(setting, "DEBUG_PRINT") || compare_strings(setting, "debug_print") ||
-		  compare_strings(setting, "VERBOSE") || compare_strings(setting, "verbose")) {
+	} else if (!strcmp(setting, "DEBUG_PRINT") || !strcmp(setting, "debug_print") ||
+		  !strcmp(setting, "VERBOSE") || !strcmp(setting, "verbose")) {
 		DEBUG_PRINT = value;
-	} else if (compare_strings(setting, "COLOR_NUMBER") || compare_strings(setting, "color_number")) {
+	} else if (!strcmp(setting, "COLOR_NUMBER") || !strcmp(setting, "color_number")) {
 		if (COLOR_NUMBER < 2) {
 			COLOR_NUMBER = 2;
 		} else if (COLOR_NUMBER > 9) {
@@ -49,13 +49,13 @@ int parse_setting(char setting[], int value) {
 		} else {
 			COLOR_NUMBER = value;
 		}
-	} else if (compare_strings(setting, "BACKGROUND_R") || compare_strings(setting, "background_r")) {
+	} else if (!strcmp(setting, "BACKGROUND_R") || !strcmp(setting, "background_r")) {
 		BACKGROUND_R = value;
-	} else if (compare_strings(setting, "BACKGROUND_G") || compare_strings(setting, "background_g")) {
+	} else if (!strcmp(setting, "BACKGROUND_G") || !strcmp(setting, "background_g")) {
 		BACKGROUND_G = value;
-	} else if (compare_strings(setting, "BACKGROUND_B") || compare_strings(setting, "background_b")) {
+	} else if (!strcmp(setting, "BACKGROUND_B") || !strcmp(setting, "background_b")) {
 		BACKGROUND_B = value;
-	} else if (compare_strings(setting, "GRID_COLOR") || compare_strings(setting, "grid_color")) {
+	} else if (!strcmp(setting, "GRID_COLOR") || !strcmp(setting, "grid_color")) {
 		GRID_COLOR = value;
 	} else {
 		// For each color get the value, if there is no value set it to 0
@@ -72,9 +72,9 @@ int parse_setting(char setting[], int value) {
 			color_check_l[6] = n+48;
 			rotation_check_u[9] = n+48;
 			rotation_check_l[9] = n+48;
-			if (compare_strings(setting, color_check_u) || compare_strings(setting, color_check_l)) {
+			if (!strcmp(setting, color_check_u) || !strcmp(setting, color_check_l)) {
 				COLORS_ARRAY[n] = value;		// Value will be depending on the code colors in the readme
-			} else if (compare_strings(setting, rotation_check_u) || compare_strings(setting, rotation_check_l)) {
+			} else if (!strcmp(setting, rotation_check_u) || !strcmp(setting, rotation_check_l)) {
 				ROTATIONS_ARRAY[n] = value;
 			}
 		}

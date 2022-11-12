@@ -5,9 +5,9 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 #include "SDL.h"
 
-#include "misc.h"
 #include "read_config.h"	// For config.cfg
 #include "ant.h"
 

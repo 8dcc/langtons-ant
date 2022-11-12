@@ -47,26 +47,26 @@ void move_forward(int ant_i) {		// Ant index
 int rotate(int rotation, int facing_direction) {
 	if (rotation == CW) {
 		switch (facing_direction) {
-			case UP:		return RIGHT;	break;
-			case DOWN:		return LEFT;	break;
-			case LEFT:		return UP;		break;
-			case RIGHT:		return DOWN;	break;
+			case UP:		return RIGHT;
+			case DOWN:		return LEFT;
+			case LEFT:		return UP;	
+			case RIGHT:		return DOWN;
 			default:		break;
 		}
 	} else if (rotation == CCW) {
 		switch (facing_direction) {
-			case UP:		return LEFT;	break;
-			case DOWN:		return RIGHT;	break;
-			case LEFT:		return DOWN;	break;
-			case RIGHT:		return UP;		break;
+			case UP:		return LEFT;
+			case DOWN:		return RIGHT;
+			case LEFT:		return DOWN;
+			case RIGHT:		return UP;
 			default:		break;
 		}
 	} else if (rotation == U_TURN) {
 		switch (facing_direction) {
-			case UP:		return DOWN;	break;
-			case DOWN:		return UP;		break;
-			case LEFT:		return RIGHT;	break;
-			case RIGHT:		return LEFT;	break;
+			case UP:		return DOWN;
+			case DOWN:		return UP;
+			case LEFT:		return RIGHT;
+			case RIGHT:		return LEFT;
 			default:		break;
 		}
 	} else {	// NO_ROTATION or unknown value
