@@ -1,5 +1,5 @@
 /*
- *	https://github.com/r4v10l1/langtons-ant-c
+ *	https://github.com/r4v10l1/langtons-ant
  *	Langtons ant simulation made in pure C with SDL2.
  *	Based on https://github.com/r4v10l1/LangtonsAnt
  */
