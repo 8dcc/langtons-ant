@@ -36,15 +36,6 @@ Setting         | Description                                                   
 `CELL_SIZE`     | Cell size in pixels make sure WINDOW_W and WINDOW_H can be divided by it   | 10
 `FPS`           | Frames per seccond when space is not pressed                               | 750
 `DELAY`         | Time that the program will wait when holding the space (ms)                | 50
-`VERBOSE`       | Also `DEBUG_PRINT`. Verbose level. Check verbose levels for more info      | 1
-
-#### Verbose levels
-Verbose | Description
---------|--------------------------------------------------------------------------------
-`0`     | Nothing will be printed
-`1`     | Steps and basic information will be printed
-`2`     | Information about the program's state, and the ants position will be printed
-`3`     | A lot of information like the array state will be printed
 
 ### Colors
 Setting         | Description                                                     | Default value
