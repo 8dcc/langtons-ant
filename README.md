@@ -1,7 +1,7 @@
 <div align=center>
   <h1>Langtons ant</h1>
   <b>Langtons ant simulation made in C using SDL2.</b><br>
-  Based on <a href="https://github.com/r4v10l1/LangtonsAnt">r4v10l1/LangtonsAnt</a>.
+  Based on <a href="https://github.com/8dcc/LangtonsAnt">8dcc/LangtonsAnt</a>.
 </div>
 
 # Table of contents

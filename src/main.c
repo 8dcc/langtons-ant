@@ -1,7 +1,7 @@
 /*
- *	https://github.com/r4v10l1/langtons-ant
+ *	https://github.com/8dcc/langtons-ant
  *	Langtons ant simulation made in pure C with SDL2.
- *	Based on https://github.com/r4v10l1/LangtonsAnt
+ *	Based on https://github.com/8dcc/LangtonsAnt
  */
 
 #include <stdio.h>
