@@ -24,6 +24,9 @@
 #define DEFAULT_H     100
 #define DEFAULT_DELAY 10
 
+/* Comment to disable printing the total number of steps */
+#define PRINT_STEPS
+
 /*----------------------------------------------------------------------------*/
 /* Types */
 
@@ -272,14 +275,26 @@ static void ant_step(ant_t* ant) {
 
     /* Move forward depending on orientation */
     ant_move_forward(ant);
+
+#ifdef PRINT_STEPS
+    static uint32_t cur_step = 0;
+    printf("\rStep: %d", cur_step++);
+    fflush(stdout);
+#endif
 }
 
 int main(int argc, char** argv) {
     if (!parse_args(argc, argv))
         die("Usage: %s <width> <height> [delay]", argv[0]);
 
-    printf("Starting a %dx%d grid with a cell size of %d px.\n", ctx.grid_w,
-           ctx.grid_h, CELL_SZ);
+    printf("Grid size: %dx%d\n"
+           "Cell size: %d px\n"
+           "Delay: %d ms\n",
+           ctx.grid_w, ctx.grid_h, CELL_SZ, ctx.delay);
+
+#ifdef PRINT_STEPS
+    putchar('\n');
+#endif
 
     /* Initialize grid in our global `ctx' structure */
     grid_init();
@@ -335,19 +350,9 @@ int main(int argc, char** argv) {
                             break;
                         case SDL_SCANCODE_G:
                             ctx.draw_grid_overlay = !ctx.draw_grid_overlay;
-                            if (ctx.draw_grid_overlay)
-                                puts("Grid overlay enabled.");
-                            else
-                                puts("Grid overlay disabled.");
                             break;
                         case SDL_SCANCODE_SPACE:
                             space_pressed = !space_pressed;
-                            if (space_pressed)
-                                printf("Automatic stepping enabled with %d ms "
-                                       "of delay.\n",
-                                       ctx.delay);
-                            else
-                                puts("Automation stepping disabled.");
                             break;
                         case SDL_SCANCODE_RIGHT:
                             stepping = true;
@@ -408,6 +413,10 @@ int main(int argc, char** argv) {
     SDL_DestroyRenderer(sdl_renderer);
     SDL_DestroyWindow(sdl_window);
     SDL_Quit();
+
+#ifdef PRINT_STEPS
+    putchar('\n');
+#endif
 
     return 0;
 }
