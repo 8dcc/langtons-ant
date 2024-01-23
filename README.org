@@ -1,0 +1,65 @@
+#+title: Langton's ant
+#+options: toc:nil
+#+startup: showeverything
+#+author: 8dcc
+
+*Langton's ant simulation made in C using SDL2.*
+
+#+TOC: headlines 2
+
+* Description
+
+Simple single-source simulation of [[https://en.wikipedia.org/wiki/Langton%27s_ant][langton's ant]], made in under 500 lines of
+C.
+
+Some of the main features:
+- Custom grid size and delay at runtime.
+- Very easy to modify color palette with no size limit. Supports 4 possible
+  rotations when stepping on each color. Modified at compile-time.
+- Unlimited number of ants at runtime, spawned by clicking on the grid.
+- Grid overlay with =g=.
+- Single stepping with =Left arrow= or automatic stepping with =Space=.
+- Easily customizable by changing macros inside the source.
+
+* Building
+
+Clone the repository and run =make=. Make sure you have [[https://www.libsdl.org/][SDL2]] installed.
+
+#+begin_src console
+$ git clone https://github.com/8dcc/langtons-ant
+$ cd langtons-ant
+$ make
+...
+#+end_src
+
+* Usage
+
+You can specify the width, height and delay at runtime.
+
+#+begin_src console
+$ ./langtons-ant
+Grid size: 100x100
+Cell size: 5 px
+Delay: 10 ms
+
+Step: 536
+
+$ ./langtons-ant 50 20 200
+Grid size: 50x20
+Cell size: 5 px
+Delay: 200 ms
+
+Step: 231
+#+end_src
+
+* Screenshots
+
+[[https://user-images.githubusercontent.com/29655971/201499266-fbcebd8f-de94-41e5-8672-8fcd0a59973a.png]]
+
+Different ants with default color palette:
+
+[[https://user-images.githubusercontent.com/29655971/299026147-146ba2bb-7888-4339-9267-bfbc4f32f1fd.png]]
+
+Single ant with 9 color palette and custom rotations:
+
+[[https://user-images.githubusercontent.com/29655971/299030082-57092214-ae91-49ad-8595-7e8e3a1d3d84.png]]
