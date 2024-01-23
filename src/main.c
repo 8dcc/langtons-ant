@@ -9,42 +9,56 @@
 /*----------------------------------------------------------------------------*/
 /* Macros */
 
-#define COL_BACKGROUND 0x050505
-#define COL_GRID       0x222222
-#define COL_ANT        0xFFFFFF
+#define LENGTH(ARR) (sizeof(ARR) / sizeof((ARR)[0]))
 
-#define CELL_SZ  9 /* px */
+#define COL_GRID_OVERLAY 0x222222
+#define COL_ANT          0xFF0000
+
+#define CELL_SZ  5 /* px */
 #define MAX_ANTS 100
 
 /* Frames per second when not holding space */
 #define FPS 60
 
-/* Delay in ms. when holding space */
-#define DELAY 100
+/* Delay in ms when holding space */
+#define DELAY 10
 
 /*----------------------------------------------------------------------------*/
 /* Types */
 
 typedef enum {
-    UP    = 0,
-    DOWN  = 1,
-    LEFT  = 2,
-    RIGHT = 3,
+    NORTH = 0,
+    SOUTH = 1,
+    WEST  = 2,
+    EAST  = 3,
+} EOrientation;
+
+typedef enum {
+    NONE  = 0, /* Don't turn */
+    LEFT  = 1, /* 90º counter-clockwise */
+    RIGHT = 2, /* 90º clockwise */
+    BACK  = 3, /* 180º */
 } ERotation;
+
+typedef struct {
+    uint32_t col;
+    /* Before leaving this color, where should the ant turn? */
+    ERotation rotation;
+} color_t;
 
 typedef struct {
     /* ctx.grid[] position */
     int x, y;
-    ERotation rotation;
-    int color_idx;
+    EOrientation orientation;
 } ant_t;
 
 typedef struct {
     bool running;
-    bool draw_grid;
+    bool draw_grid_overlay;
 
+    /* Each item is an index of the colors[] array */
+    int* grid;
     /* Independent of tile size */
-    uint32_t* grid;
     int grid_w, grid_h;
 
     ant_t* ants[MAX_ANTS];
@@ -54,9 +68,14 @@ typedef struct {
 /*----------------------------------------------------------------------------*/
 /* Globals */
 
+color_t colors[] = {
+    { 0x000000, LEFT },
+    { 0xEEEEEE, RIGHT },
+};
+
 ctx_t ctx = {
-    .running   = true,
-    .draw_grid = false,
+    .running           = true,
+    .draw_grid_overlay = false,
 
     .grid   = NULL,
     .grid_w = 0,
@@ -99,9 +118,10 @@ static bool parse_args(int argc, char** argv) {
 static void grid_init(void) {
     ctx.grid = malloc(ctx.grid_w * ctx.grid_h * sizeof(uint32_t));
 
+    /* Each cell contains an index to the colors[] array, start at 0 */
     for (int y = 0; y < ctx.grid_h; y++)
         for (int x = 0; x < ctx.grid_w; x++)
-            ctx.grid[ctx.grid_w * y + x] = COL_BACKGROUND;
+            ctx.grid[ctx.grid_w * y + x] = 0;
 }
 
 static inline void set_render_color(SDL_Renderer* rend, uint32_t col) {
@@ -112,8 +132,8 @@ static inline void set_render_color(SDL_Renderer* rend, uint32_t col) {
     SDL_SetRenderDrawColor(rend, r, g, b, a);
 }
 
-static void draw_grid(SDL_Renderer* rend) {
-    set_render_color(rend, COL_GRID);
+static void draw_grid_overlay(SDL_Renderer* rend) {
+    set_render_color(rend, COL_GRID_OVERLAY);
 
     const int window_w = ctx.grid_w * CELL_SZ;
     const int window_h = ctx.grid_h * CELL_SZ;
@@ -125,43 +145,105 @@ static void draw_grid(SDL_Renderer* rend) {
         SDL_RenderDrawLine(rend, 0, y, window_w, y);
 }
 
-static void draw_ant(SDL_Renderer* rend, ant_t* cur_ant) {
+static void draw_ant(SDL_Renderer* rend, ant_t* ant) {
     set_render_color(rend, COL_ANT);
 
     const int margin = 1;
-    const int height = 3;
-    const int width  = CELL_SZ - (margin * 2);
 
-    SDL_Rect rect;
-    switch (cur_ant->rotation) {
-        default:
-        case UP:
-            rect.x = (cur_ant->x * CELL_SZ) + margin;
-            rect.y = (cur_ant->y * CELL_SZ) + margin;
-            rect.w = width;
-            rect.h = height;
-            break;
-        case DOWN:
-            rect.x = (cur_ant->x * CELL_SZ) + margin;
-            rect.y = (cur_ant->y * CELL_SZ) + CELL_SZ - margin - height;
-            rect.w = width;
-            rect.h = height;
-            break;
-        case LEFT:
-            rect.x = (cur_ant->x * CELL_SZ) + margin;
-            rect.y = (cur_ant->y * CELL_SZ) + margin;
-            rect.w = height;
-            rect.h = width;
-            break;
-        case RIGHT:
-            rect.x = (cur_ant->x * CELL_SZ) + CELL_SZ - margin - width;
-            rect.y = (cur_ant->y * CELL_SZ) + margin;
-            rect.w = height;
-            rect.h = width;
-            break;
+    int px_x = (ant->x * CELL_SZ) + margin;
+    int px_y = (ant->y * CELL_SZ) + margin;
+    int px_w = CELL_SZ - (margin * 2);
+    int px_h = CELL_SZ - (margin * 2);
+
+    /* Increase position 1px since the overlay will cover left and up borders */
+    if (ctx.draw_grid_overlay) {
+        px_x++;
+        px_y++;
+        px_w--;
+        px_h--;
     }
 
+    SDL_Rect rect = {
+        .x = px_x,
+        .y = px_y,
+        .w = px_w,
+        .h = px_h,
+    };
+
     SDL_RenderFillRect(rend, &rect);
+}
+
+static EOrientation rotate(EOrientation orientation, ERotation rotation) {
+    /* clang-format off */
+    switch (rotation) {
+        default:
+        case NONE: return orientation;
+        case LEFT:
+            switch (orientation) {
+                default:
+                case NORTH: return WEST;
+                case SOUTH: return EAST;
+                case WEST:  return SOUTH;
+                case EAST:  return NORTH;
+            }
+        case RIGHT:
+            switch (orientation) {
+                default:
+                case NORTH: return EAST;
+                case SOUTH: return WEST;
+                case WEST:  return NORTH;
+                case EAST:  return SOUTH;
+            }
+        case BACK:
+            switch (orientation) {
+                default:
+                case NORTH: return SOUTH;
+                case SOUTH: return NORTH;
+                case WEST:  return EAST;
+                case EAST:  return WEST;
+            }
+    }
+    /* clang-format on */
+}
+
+static inline void ant_move_forward(ant_t* ant) {
+    /* clang-format off */
+    switch (ant->orientation) {
+        case NORTH: ant->y--;   break;
+        case SOUTH: ant->y++;   break;
+        case WEST:  ant->x--;   break;
+        case EAST:  ant->x++;   break;
+    }
+    /* clang-format on */
+
+    /* Make sure we are not out of bounds */
+    if (ant->x < 0)
+        ant->x = 0;
+    if (ant->x >= ctx.grid_w)
+        ant->x = ctx.grid_w - 1;
+
+    if (ant->y < 0)
+        ant->y = 0;
+    if (ant->y >= ctx.grid_h)
+        ant->y = ctx.grid_h - 1;
+}
+
+static void ant_step(ant_t* ant) {
+    uint32_t color_idx = ctx.grid[ctx.grid_w * ant->y + ant->x];
+    color_t color      = colors[color_idx];
+
+    /* Where are we supposed to turn before leaving the color? */
+    ant->orientation = rotate(ant->orientation, color.rotation);
+
+    /* Switch to the next color */
+    ctx.grid[ctx.grid_w * ant->y + ant->x]++;
+
+    /* If we reached the last color, go back to the first one */
+    if (color_idx + 1 >= LENGTH(colors))
+        ctx.grid[ctx.grid_w * ant->y + ant->x] = 0;
+
+    /* Move forward depending on orientation */
+    ant_move_forward(ant);
 }
 
 int main(int argc, char** argv) {
@@ -191,25 +273,23 @@ int main(int argc, char** argv) {
         die("Error creating SDL renderer.");
     }
 
+    // DELME
+    ctx.ants[ctx.ant_num]              = malloc(sizeof(ant_t));
+    ctx.ants[ctx.ant_num]->x           = 30;
+    ctx.ants[ctx.ant_num]->y           = 30;
+    ctx.ants[ctx.ant_num]->orientation = NORTH;
+    ctx.ant_num++;
+
     /* Main loop */
     bool space_pressed = false;
     bool stepping      = false;
-
-    SDL_Event sdl_event;
-
-    // DELME
-    ctx.ants[ctx.ant_num]            = malloc(sizeof(ant_t));
-    ctx.ants[ctx.ant_num]->x         = 5;
-    ctx.ants[ctx.ant_num]->y         = 5;
-    ctx.ants[ctx.ant_num]->rotation  = UP;
-    ctx.ants[ctx.ant_num]->color_idx = 0;
-    ctx.ant_num++;
 
     while (ctx.running) {
         /* Reset every frame */
         stepping = false;
 
         /* Parse SDL events */
+        SDL_Event sdl_event;
         while (SDL_PollEvent(&sdl_event)) {
             switch (sdl_event.type) {
                 case SDL_QUIT:
@@ -223,10 +303,20 @@ int main(int argc, char** argv) {
                             ctx.running = false;
                             break;
                         case SDL_SCANCODE_G:
-                            ctx.draw_grid = !ctx.draw_grid;
+                            ctx.draw_grid_overlay = !ctx.draw_grid_overlay;
+                            if (ctx.draw_grid_overlay)
+                                puts("Grid overlay enabled.");
+                            else
+                                puts("Grid overlay disabled.");
                             break;
                         case SDL_SCANCODE_SPACE:
                             space_pressed = !space_pressed;
+                            if (space_pressed)
+                                printf("Automatic stepping enabled with %d ms "
+                                       "of delay.\n",
+                                       DELAY);
+                            else
+                                puts("Automation stepping disabled.");
                             break;
                         case SDL_SCANCODE_RIGHT:
                             stepping = true;
@@ -242,18 +332,19 @@ int main(int argc, char** argv) {
         }
 
         /* Clear window */
-        set_render_color(sdl_renderer, COL_BACKGROUND);
+        set_render_color(sdl_renderer, 0x000000);
         SDL_RenderClear(sdl_renderer);
 
         /* Either we pressed space at some point or we are manually stepping */
-        if (space_pressed || stepping) {
-            /* TODO: Move ants */
-        }
+        if (space_pressed || stepping)
+            for (int i = 0; i < ctx.ant_num; i++)
+                ant_step(ctx.ants[i]);
 
         /* Draw cells */
         for (int y = 0; y < ctx.grid_h; y++) {
             for (int x = 0; x < ctx.grid_w; x++) {
-                set_render_color(sdl_renderer, ctx.grid[ctx.grid_w * y + x]);
+                uint32_t color_idx = ctx.grid[ctx.grid_w * y + x];
+                set_render_color(sdl_renderer, colors[color_idx].col);
 
                 SDL_Rect rect = {
                     .x = x * CELL_SZ,
@@ -270,9 +361,9 @@ int main(int argc, char** argv) {
         for (int i = 0; i < ctx.ant_num; i++)
             draw_ant(sdl_renderer, ctx.ants[i]);
 
-        /* Draw grid if active */
-        if (ctx.draw_grid)
-            draw_grid(sdl_renderer);
+        /* Draw grid overlay if enabled */
+        if (ctx.draw_grid_overlay)
+            draw_grid_overlay(sdl_renderer);
 
         /* Send to renderer */
         SDL_RenderPresent(sdl_renderer);
