@@ -1,9 +1,9 @@
 
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 #include "SDL.h"
 
 /*----------------------------------------------------------------------------*/
@@ -20,8 +20,9 @@
 /* Frames per second when not holding space */
 #define FPS 60
 
-/* Delay in ms when holding space */
-#define DELAY 10
+#define DEFAULT_W     100
+#define DEFAULT_H     100
+#define DEFAULT_DELAY 10
 
 /*----------------------------------------------------------------------------*/
 /* Types */
@@ -56,6 +57,9 @@ typedef struct {
     bool running;
     bool draw_grid_overlay;
 
+    /* Delay in ms when holding space */
+    int delay;
+
     /* Each item is an index of the colors[] array */
     int* grid;
     /* Independent of tile size */
@@ -69,19 +73,32 @@ typedef struct {
 /* Globals */
 
 color_t colors[] = {
+    /* clang-format off */
     { 0x000000, LEFT },
     { 0xEEEEEE, RIGHT },
+
+    #ifdef BLUE_PALETTE
+    { 0x000000, RIGHT },
+    { 0x03045E, RIGHT },
+    { 0x023E8A, LEFT },
+    { 0x0077B6, LEFT },
+    { 0x0096C7, LEFT },
+    { 0x00B4D8, RIGHT },
+    { 0x48CAE4, LEFT },
+    { 0x90E0EF, RIGHT },
+    { 0xADE8F4, LEFT },
+    #endif
+    /* clang-format on */
 };
 
 ctx_t ctx = {
     .running           = true,
     .draw_grid_overlay = false,
-
-    .grid   = NULL,
-    .grid_w = 0,
-    .grid_h = 0,
-
-    .ant_num = 0,
+    .delay             = DEFAULT_DELAY,
+    .grid              = NULL,
+    .grid_w            = DEFAULT_W,
+    .grid_h            = DEFAULT_H,
+    .ant_num           = 0,
 };
 
 /*----------------------------------------------------------------------------*/
@@ -99,17 +116,28 @@ static void die(const char* fmt, ...) {
 }
 
 static bool parse_args(int argc, char** argv) {
-    if (argc != 3) {
-        fprintf(stderr, "Wrong number of arguments.\n");
+    if (argc == 2) {
+        fprintf(stderr, "You need to specify a width and a height.\n");
         return false;
     }
 
-    ctx.grid_w = atoi(argv[1]);
-    ctx.grid_h = atoi(argv[2]);
+    if (argc >= 3) {
+        ctx.grid_w = atoi(argv[1]);
+        ctx.grid_h = atoi(argv[2]);
 
-    if (ctx.grid_w < 1 || ctx.grid_h < 1) {
-        fprintf(stderr, "Invalid grid size.\n");
-        return false;
+        if (ctx.grid_w < 1 || ctx.grid_h < 1) {
+            fprintf(stderr, "Invalid grid size.\n");
+            return false;
+        }
+    }
+
+    if (argc >= 4) {
+        ctx.delay = atoi(argv[3]);
+
+        if (ctx.delay < 1) {
+            fprintf(stderr, "Invalid delay.\n");
+            return false;
+        }
     }
 
     return true;
@@ -248,7 +276,10 @@ static void ant_step(ant_t* ant) {
 
 int main(int argc, char** argv) {
     if (!parse_args(argc, argv))
-        die("Usage: %s <width> <height>\n", argv[0]);
+        die("Usage: %s <width> <height> [delay]", argv[0]);
+
+    printf("Starting a %dx%d grid with a cell size of %d px.\n", ctx.grid_w,
+           ctx.grid_h, CELL_SZ);
 
     /* Initialize grid in our global `ctx' structure */
     grid_init();
@@ -314,7 +345,7 @@ int main(int argc, char** argv) {
                             if (space_pressed)
                                 printf("Automatic stepping enabled with %d ms "
                                        "of delay.\n",
-                                       DELAY);
+                                       ctx.delay);
                             else
                                 puts("Automation stepping disabled.");
                             break;
@@ -369,7 +400,7 @@ int main(int argc, char** argv) {
         SDL_RenderPresent(sdl_renderer);
 
         if (space_pressed)
-            SDL_Delay(DELAY);
+            SDL_Delay(ctx.delay);
         else
             SDL_Delay(1000 / FPS);
     }
