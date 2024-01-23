@@ -264,14 +264,14 @@ static inline void ant_move_forward(ant_t* ant) {
 
     /* Make sure we are not out of bounds */
     if (ant->x < 0)
-        ant->x = 0;
-    if (ant->x >= ctx.grid_w)
         ant->x = ctx.grid_w - 1;
+    if (ant->x >= ctx.grid_w)
+        ant->x = 0;
 
     if (ant->y < 0)
-        ant->y = 0;
-    if (ant->y >= ctx.grid_h)
         ant->y = ctx.grid_h - 1;
+    if (ant->y >= ctx.grid_h)
+        ant->y = 0;
 }
 
 static void ant_step(ant_t* ant) {
