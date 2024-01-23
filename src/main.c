@@ -20,6 +20,7 @@
 /* Frames per second when not holding space */
 #define FPS 60
 
+/* Default values if the parameter is not specified */
 #define DEFAULT_W     100
 #define DEFAULT_H     100
 #define DEFAULT_DELAY 10
@@ -105,7 +106,7 @@ ctx_t ctx = {
 };
 
 /*----------------------------------------------------------------------------*/
-/* Functions */
+/* Static functions */
 
 static void die(const char* fmt, ...) {
     va_list va;
@@ -283,6 +284,9 @@ static void ant_step(ant_t* ant) {
 #endif
 }
 
+/*----------------------------------------------------------------------------*/
+/* Main function */
+
 int main(int argc, char** argv) {
     if (!parse_args(argc, argv))
         die("Usage: %s <width> <height> [delay]", argv[0]);
@@ -319,13 +323,6 @@ int main(int argc, char** argv) {
         die("Error creating SDL renderer.");
     }
 
-    // DELME
-    ctx.ants[ctx.ant_num]              = malloc(sizeof(ant_t));
-    ctx.ants[ctx.ant_num]->x           = 30;
-    ctx.ants[ctx.ant_num]->y           = 30;
-    ctx.ants[ctx.ant_num]->orientation = NORTH;
-    ctx.ant_num++;
-
     /* Main loop */
     bool space_pressed = false;
     bool stepping      = false;
@@ -353,6 +350,10 @@ int main(int argc, char** argv) {
                             break;
                         case SDL_SCANCODE_SPACE:
                             space_pressed = !space_pressed;
+#ifdef PRINT_STEPS
+                            if (!space_pressed)
+                                putchar('\n');
+#endif
                             break;
                         case SDL_SCANCODE_RIGHT:
                             stepping = true;
@@ -361,7 +362,36 @@ int main(int argc, char** argv) {
                             break;
                     }
                     break;
-                /* TODO: Add ants when clicking */
+                case SDL_MOUSEBUTTONDOWN:
+                    switch (sdl_event.button.button) {
+                        case SDL_BUTTON_LEFT:
+                            int grid_x = sdl_event.motion.x / CELL_SZ;
+                            int grid_y = sdl_event.motion.y / CELL_SZ;
+
+                            /* Check if there is already an ant in that cell */
+                            for (int i = 0; i < ctx.ant_num; i++) {
+                                if (ctx.ants[i]->x == grid_x &&
+                                    ctx.ants[i]->y == grid_y) {
+                                    puts("There is an ant in that position, "
+                                         "skipping.");
+                                    break;
+                                }
+                            }
+
+                            /* Create new ant where the user clicked */
+                            ctx.ants[ctx.ant_num]    = malloc(sizeof(ant_t));
+                            ctx.ants[ctx.ant_num]->x = grid_x;
+                            ctx.ants[ctx.ant_num]->y = grid_y;
+
+                            /* Default orientation is always north */
+                            ctx.ants[ctx.ant_num]->orientation = NORTH;
+
+                            ctx.ant_num++;
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
                 default:
                     break;
             }
@@ -410,12 +440,18 @@ int main(int argc, char** argv) {
             SDL_Delay(1000 / FPS);
     }
 
+    /* Free our stuff */
+    free(ctx.grid);
+    for (int i = 0; i < ctx.ant_num; i++)
+        free(ctx.ants[i]);
+
     SDL_DestroyRenderer(sdl_renderer);
     SDL_DestroyWindow(sdl_window);
     SDL_Quit();
 
 #ifdef PRINT_STEPS
-    putchar('\n');
+    if (space_pressed)
+        putchar('\n');
 #endif
 
     return 0;
