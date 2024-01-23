@@ -170,9 +170,11 @@ static void draw_grid_overlay(SDL_Renderer* rend) {
     const int window_w = ctx.grid_w * CELL_SZ;
     const int window_h = ctx.grid_h * CELL_SZ;
 
+    /* Vertical lines */
     for (int x = CELL_SZ; x < window_w; x += CELL_SZ)
         SDL_RenderDrawLine(rend, x, 0, x, window_h);
 
+    /* Horizontal lines */
     for (int y = CELL_SZ; y < window_h; y += CELL_SZ)
         SDL_RenderDrawLine(rend, 0, y, window_w, y);
 }
