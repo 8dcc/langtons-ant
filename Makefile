@@ -1,12 +1,15 @@
 
 CC=gcc
-CFLAGS=-Wall
+CFLAGS=-Wall -Wextra
 BIN=langtons-ant
+
+.PHONY: all clean
 
 all: $(BIN)
 
-$(BIN):	src/*.c src/*.h
-	$(CC) $(CLFAGS) -o $@ src/main.c `sdl2-config --cflags --libs`
-
 clean:
 	rm -f $(BIN)
+
+$(BIN):	src/main.c
+	$(CC) $(CFLAGS) -o $@ $< `sdl2-config --cflags --libs`
+
