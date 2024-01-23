@@ -107,3 +107,5 @@ Code  | Color       | RGB value
 ![Screenshot 1](https://user-images.githubusercontent.com/29655971/201499266-fbcebd8f-de94-41e5-8672-8fcd0a59973a.png)
 ![Screenshot 2](https://user-images.githubusercontent.com/29655971/201499271-cf7e11ab-8e8b-4ee1-bec2-2ad59014c357.png)
 ![Screenshot 3](https://user-images.githubusercontent.com/29655971/201499279-f12a6d21-39b9-4592-af05-0d102e7c913d.png)
+![ss-1706028468](https://github.com/8dcc/langtons-ant/assets/29655971/39f92313-5d34-4e8f-b3b0-f6602f47401e)
+![ss-1706027038](https://github.com/8dcc/langtons-ant/assets/29655971/9ff7a455-18b0-4e01-95bc-3ae60f5906f3)
