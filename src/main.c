@@ -147,6 +147,18 @@ static bool parse_args(int argc, char** argv) {
     return true;
 }
 
+static inline const char* rotation2str(ERotation rotation) {
+    /* clang-format off */
+    switch (rotation) {
+        default:
+        case NONE:  return "None";
+        case LEFT:  return "Counter-clockwise";
+        case RIGHT: return "Clockwise";
+        case BACK:  return "180º";
+    }
+    /* clang-format on */
+}
+
 static void grid_init(void) {
     ctx.grid = malloc(ctx.grid_w * ctx.grid_h * sizeof(uint32_t));
 
@@ -295,8 +307,13 @@ int main(int argc, char** argv) {
 
     printf("Grid size: %dx%d\n"
            "Cell size: %d px\n"
-           "Delay: %d ms\n",
+           "Delay: %d ms\n\n"
+           "Color palette:\n",
            ctx.grid_w, ctx.grid_h, CELL_SZ, ctx.delay);
+
+    for (uint32_t i = 0; i < LENGTH(colors); i++)
+        printf("[%d] 0x%06X (%s)\n", i, colors[i].col,
+               rotation2str(colors[i].rotation));
 
 #ifdef PRINT_STEPS
     putchar('\n');
@@ -452,8 +469,7 @@ int main(int argc, char** argv) {
     SDL_Quit();
 
 #ifdef PRINT_STEPS
-    if (space_pressed)
-        putchar('\n');
+    putchar('\n');
 #endif
 
     return 0;
