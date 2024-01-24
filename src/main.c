@@ -371,7 +371,7 @@ int main(int argc, char** argv) {
                     break;
                 case SDL_MOUSEBUTTONDOWN:
                     switch (sdl_event.button.button) {
-                        case SDL_BUTTON_LEFT:
+                        case SDL_BUTTON_LEFT: {
                             int grid_x = sdl_event.motion.x / CELL_SZ;
                             int grid_y = sdl_event.motion.y / CELL_SZ;
 
@@ -394,7 +394,7 @@ int main(int argc, char** argv) {
                             ctx.ants[ctx.ant_num]->orientation = NORTH;
 
                             ctx.ant_num++;
-                            break;
+                        } break;
                         default:
                             break;
                     }
