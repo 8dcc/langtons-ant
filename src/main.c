@@ -77,22 +77,8 @@ typedef struct {
 /* Globals */
 
 color_t colors[] = {
-    /* clang-format off */
     { 0x000000, LEFT },
     { 0xEEEEEE, RIGHT },
-
-    #ifdef BLUE_PALETTE
-    { 0x000000, RIGHT },
-    { 0x03045E, RIGHT },
-    { 0x023E8A, LEFT },
-    { 0x0077B6, LEFT },
-    { 0x0096C7, LEFT },
-    { 0x00B4D8, RIGHT },
-    { 0x48CAE4, LEFT },
-    { 0x90E0EF, RIGHT },
-    { 0xADE8F4, LEFT },
-    #endif
-    /* clang-format on */
 };
 
 ctx_t ctx = {
@@ -311,6 +297,7 @@ int main(int argc, char** argv) {
            "Color palette:\n",
            ctx.grid_w, ctx.grid_h, CELL_SZ, ctx.delay);
 
+    /* Print current color palette */
     for (uint32_t i = 0; i < LENGTH(colors); i++)
         printf("[%d] 0x%06X (%s)\n", i, colors[i].col,
                rotation2str(colors[i].rotation));
@@ -325,6 +312,7 @@ int main(int argc, char** argv) {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0)
         die("Unable to start SDL.");
 
+    /* Create SDL window */
     const int window_w = ctx.grid_w * CELL_SZ;
     const int window_h = ctx.grid_h * CELL_SZ;
     SDL_Window* sdl_window =
@@ -333,7 +321,7 @@ int main(int argc, char** argv) {
     if (!sdl_window)
         die("Error creating SDL window.");
 
-    /* Create renderer */
+    /* Create SDL renderer */
     SDL_Renderer* sdl_renderer =
       SDL_CreateRenderer(sdl_window, -1,
                          SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
@@ -358,7 +346,6 @@ int main(int argc, char** argv) {
                     ctx.running = false;
                     break;
                 case SDL_KEYDOWN:
-                    // Check the pressed key
                     switch (sdl_event.key.keysym.scancode) {
                         case SDL_SCANCODE_ESCAPE:
                         case SDL_SCANCODE_Q:
@@ -375,6 +362,7 @@ int main(int argc, char** argv) {
 #endif
                             break;
                         case SDL_SCANCODE_RIGHT:
+                            /* Will be reset to false on the next iteration */
                             stepping = true;
                             break;
                         default:
@@ -453,6 +441,7 @@ int main(int argc, char** argv) {
         /* Send to renderer */
         SDL_RenderPresent(sdl_renderer);
 
+        /* If we are in a simulation, use custom delay. N fps otherwise */
         if (space_pressed)
             SDL_Delay(ctx.delay);
         else
