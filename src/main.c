@@ -393,18 +393,14 @@ int main(int argc, char** argv) {
                 case SDL_MOUSEBUTTONDOWN:
                     switch (sdl_event.button.button) {
                         case SDL_BUTTON_LEFT: {
-                            int grid_x = sdl_event.motion.x / CELL_SZ;
-                            int grid_y = sdl_event.motion.y / CELL_SZ;
+                            int grid_x = (sdl_event.motion.x - 1) / CELL_SZ;
+                            int grid_y = (sdl_event.motion.y - 1) / CELL_SZ;
 
                             /* Check if there is already an ant in that cell */
-                            for (int i = 0; i < ctx.ant_num; i++) {
+                            for (int i = 0; i < ctx.ant_num; i++)
                                 if (ctx.ants[i]->x == grid_x &&
-                                    ctx.ants[i]->y == grid_y) {
-                                    puts("There is an ant in that position, "
-                                         "skipping.");
+                                    ctx.ants[i]->y == grid_y)
                                     break;
-                                }
-                            }
 
                             /* Create new ant where the user clicked */
                             ctx.ants[ctx.ant_num]    = malloc(sizeof(ant_t));
@@ -415,6 +411,34 @@ int main(int argc, char** argv) {
                             ctx.ants[ctx.ant_num]->orientation = NORTH;
 
                             ctx.ant_num++;
+                        } break;
+                        case SDL_BUTTON_RIGHT: {
+                            int grid_x = (sdl_event.motion.x - 1) / CELL_SZ;
+                            int grid_y = (sdl_event.motion.y - 1) / CELL_SZ;
+
+                            /* Get the ant in that cell */
+                            int ant_idx = -1;
+                            for (int i = 0; i < ctx.ant_num; i++) {
+                                if (ctx.ants[i]->x == grid_x &&
+                                    ctx.ants[i]->y == grid_y) {
+                                    ant_idx = i;
+                                    break;
+                                }
+                            }
+
+                            /* No ant in that position */
+                            if (ant_idx == -1)
+                                break;
+
+                            /* Remove the ant */
+                            free(ctx.ants[ant_idx]);
+
+                            /* Shift the rest of the ants one position */
+                            for (int i = ant_idx; i < ctx.ant_num - 1; i++)
+                                ctx.ants[i] = ctx.ants[i + 1];
+
+                            /* Decrease total number of ants */
+                            ctx.ant_num--;
                         } break;
                         default:
                             break;
