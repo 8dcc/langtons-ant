@@ -71,6 +71,7 @@ typedef struct {
 
     ant_t* ants[MAX_ANTS];
     int ant_num;
+    int steps_per_frame;
 } ctx_t;
 
 /*----------------------------------------------------------------------------*/
@@ -89,6 +90,7 @@ ctx_t ctx = {
     .grid_w            = DEFAULT_W,
     .grid_h            = DEFAULT_H,
     .ant_num           = 0,
+    .steps_per_frame   = 1,
 };
 
 /*----------------------------------------------------------------------------*/
@@ -126,6 +128,15 @@ static bool parse_args(int argc, char** argv) {
 
         if (ctx.delay < 1) {
             fprintf(stderr, "Invalid delay.\n");
+            return false;
+        }
+    }
+
+    if (argc >= 5) {
+        ctx.steps_per_frame = atoi(argv[4]);
+
+        if (ctx.delay < 1) {
+            fprintf(stderr, "Invalid step number.\n");
             return false;
         }
     }
@@ -279,7 +290,7 @@ static void ant_step(ant_t* ant) {
 
 #ifdef PRINT_STEPS
     static uint32_t cur_step = 0;
-    printf("\rStep: %d", cur_step++);
+    printf("* Step: %d                      \r", cur_step++);
     fflush(stdout);
 #endif
 }
@@ -289,7 +300,7 @@ static void ant_step(ant_t* ant) {
 
 int main(int argc, char** argv) {
     if (!parse_args(argc, argv))
-        die("Usage: %s <width> <height> [delay]", argv[0]);
+        die("Usage: %s <width> <height> [delay] [steps_per_frame]", argv[0]);
 
     printf("Grid size: %dx%d\n"
            "Cell size: %d px\n"
@@ -356,14 +367,24 @@ int main(int argc, char** argv) {
                             break;
                         case SDL_SCANCODE_SPACE:
                             space_pressed = !space_pressed;
-#ifdef PRINT_STEPS
-                            if (!space_pressed)
-                                putchar('\n');
-#endif
                             break;
                         case SDL_SCANCODE_RIGHT:
                             /* Will be reset to false on the next iteration */
                             stepping = true;
+                            break;
+                        case SDL_SCANCODE_UP:
+                            ctx.steps_per_frame++;
+                            printf("* Steps per frame: %d            \r",
+                                   ctx.steps_per_frame);
+                            fflush(stdout);
+                            break;
+                        case SDL_SCANCODE_DOWN:
+                            if (ctx.steps_per_frame > 1) {
+                                ctx.steps_per_frame--;
+                                printf("* Steps per frame: %d            \r",
+                                       ctx.steps_per_frame);
+                                fflush(stdout);
+                            }
                             break;
                         default:
                             break;
@@ -408,10 +429,15 @@ int main(int argc, char** argv) {
         set_render_color(sdl_renderer, 0x000000);
         SDL_RenderClear(sdl_renderer);
 
-        /* Either we pressed space at some point or we are manually stepping */
-        if (space_pressed || stepping)
+        /* We are manually stepping, always do 1 step */
+        if (stepping)
             for (int i = 0; i < ctx.ant_num; i++)
                 ant_step(ctx.ants[i]);
+        else if (space_pressed)
+            /* Auto-stepping, simulate N per frame */
+            for (int j = 0; j < ctx.steps_per_frame; j++)
+                for (int i = 0; i < ctx.ant_num; i++)
+                    ant_step(ctx.ants[i]);
 
         /* Draw cells */
         for (int y = 0; y < ctx.grid_h; y++) {
