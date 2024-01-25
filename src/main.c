@@ -393,6 +393,12 @@ int main(int argc, char** argv) {
                 case SDL_MOUSEBUTTONDOWN:
                     switch (sdl_event.button.button) {
                         case SDL_BUTTON_LEFT: {
+                            if (ctx.ant_num + 1 >= MAX_ANTS) {
+                                printf("* Ant limit reached. Skipping...   \r");
+                                fflush(stdout);
+                                break;
+                            }
+
                             int grid_x = (sdl_event.motion.x - 1) / CELL_SZ;
                             int grid_y = (sdl_event.motion.y - 1) / CELL_SZ;
 
@@ -507,9 +513,7 @@ int main(int argc, char** argv) {
     SDL_DestroyWindow(sdl_window);
     SDL_Quit();
 
-#ifdef PRINT_STEPS
     putchar('\n');
-#endif
 
     return 0;
 }
