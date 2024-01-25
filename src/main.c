@@ -399,8 +399,8 @@ int main(int argc, char** argv) {
                                 break;
                             }
 
-                            int grid_x = (sdl_event.motion.x - 1) / CELL_SZ;
-                            int grid_y = (sdl_event.motion.y - 1) / CELL_SZ;
+                            int grid_x = sdl_event.motion.x / CELL_SZ;
+                            int grid_y = sdl_event.motion.y / CELL_SZ;
 
                             /* Check if there is already an ant in that cell */
                             for (int i = 0; i < ctx.ant_num; i++)
@@ -419,8 +419,8 @@ int main(int argc, char** argv) {
                             ctx.ant_num++;
                         } break;
                         case SDL_BUTTON_RIGHT: {
-                            int grid_x = (sdl_event.motion.x - 1) / CELL_SZ;
-                            int grid_y = (sdl_event.motion.y - 1) / CELL_SZ;
+                            int grid_x = sdl_event.motion.x / CELL_SZ;
+                            int grid_y = sdl_event.motion.y / CELL_SZ;
 
                             /* Get the ant in that cell */
                             int ant_idx = -1;
