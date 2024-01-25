@@ -52,6 +52,20 @@ Delay: 200 ms
 Step: 231
 #+end_src
 
+You can use the following keys:
+
+| Key         | Description                                            |
+|-------------+--------------------------------------------------------|
+| =q=           | Quit the program.                                      |
+| =ESC=         | Same as =q=.                                             |
+| =g=           | Toggle grid overlay.                                   |
+| =Left Arrow=  | Single step.                                           |
+| =Space=       | Toggle auto-stepping.                                  |
+| =Up Arrow=    | Increase number of steps per frame when auto-stepping. |
+| =Down Arrow=  | Decrease number of steps per frame when auto-stepping. |
+| =Left Click=  | Add ant at the specified position.                     |
+| =Right Click= | Remove ant at the specified position.                  |
+
 * Screenshots
 
 Different ants with default color palette:
