@@ -306,11 +306,16 @@ int main(int argc, char** argv) {
            "Cell size: %d px\n"
            "Delay: %d ms\n\n"
            "Color palette:\n",
-           ctx.grid_w, ctx.grid_h, CELL_SZ, ctx.delay);
+           ctx.grid_w,
+           ctx.grid_h,
+           CELL_SZ,
+           ctx.delay);
 
     /* Print current color palette */
     for (uint32_t i = 0; i < LENGTH(colors); i++)
-        printf("[%d] 0x%06X (%s)\n", i, colors[i].col,
+        printf("[%d] 0x%06X (%s)\n",
+               i,
+               colors[i].col,
                rotation2str(colors[i].rotation));
 
 #ifdef PRINT_STEPS
@@ -324,17 +329,21 @@ int main(int argc, char** argv) {
         die("Unable to start SDL.");
 
     /* Create SDL window */
-    const int window_w = ctx.grid_w * CELL_SZ;
-    const int window_h = ctx.grid_h * CELL_SZ;
-    SDL_Window* sdl_window =
-      SDL_CreateWindow("Langton's ant", SDL_WINDOWPOS_CENTERED,
-                       SDL_WINDOWPOS_CENTERED, window_w, window_h, 0);
+    const int window_w     = ctx.grid_w * CELL_SZ;
+    const int window_h     = ctx.grid_h * CELL_SZ;
+    SDL_Window* sdl_window = SDL_CreateWindow("Langton's ant",
+                                              SDL_WINDOWPOS_CENTERED,
+                                              SDL_WINDOWPOS_CENTERED,
+                                              window_w,
+                                              window_h,
+                                              0);
     if (!sdl_window)
         die("Error creating SDL window.");
 
     /* Create SDL renderer */
     SDL_Renderer* sdl_renderer =
-      SDL_CreateRenderer(sdl_window, -1,
+      SDL_CreateRenderer(sdl_window,
+                         -1,
                          SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (!sdl_renderer) {
         SDL_DestroyWindow(sdl_window);
@@ -356,28 +365,34 @@ int main(int argc, char** argv) {
                 case SDL_QUIT:
                     ctx.running = false;
                     break;
+
                 case SDL_KEYDOWN:
                     switch (sdl_event.key.keysym.scancode) {
                         case SDL_SCANCODE_ESCAPE:
                         case SDL_SCANCODE_Q:
                             ctx.running = false;
                             break;
+
                         case SDL_SCANCODE_G:
                             ctx.draw_grid_overlay = !ctx.draw_grid_overlay;
                             break;
+
                         case SDL_SCANCODE_SPACE:
                             space_pressed = !space_pressed;
                             break;
+
                         case SDL_SCANCODE_RIGHT:
                             /* Will be reset to false on the next iteration */
                             stepping = true;
                             break;
+
                         case SDL_SCANCODE_UP:
                             ctx.steps_per_frame++;
                             printf("* Steps per frame: %d            \r",
                                    ctx.steps_per_frame);
                             fflush(stdout);
                             break;
+
                         case SDL_SCANCODE_DOWN:
                             if (ctx.steps_per_frame > 1) {
                                 ctx.steps_per_frame--;
@@ -386,6 +401,7 @@ int main(int argc, char** argv) {
                                 fflush(stdout);
                             }
                             break;
+
                         case SDL_SCANCODE_F11:
                         case SDL_SCANCODE_F: {
                             /* Toggle fullscreen */
@@ -397,10 +413,12 @@ int main(int argc, char** argv) {
 
                             SDL_SetWindowFullscreen(sdl_window, new_flags);
                         } break;
+
                         default:
                             break;
                     }
                     break;
+
                 case SDL_MOUSEBUTTONDOWN:
                     switch (sdl_event.button.button) {
                         case SDL_BUTTON_LEFT: {
@@ -429,6 +447,7 @@ int main(int argc, char** argv) {
 
                             ctx.ant_num++;
                         } break;
+
                         case SDL_BUTTON_RIGHT: {
                             int grid_x = sdl_event.motion.x / CELL_SZ;
                             int grid_y = sdl_event.motion.y / CELL_SZ;
@@ -457,10 +476,12 @@ int main(int argc, char** argv) {
                             /* Decrease total number of ants */
                             ctx.ant_num--;
                         } break;
+
                         default:
                             break;
                     }
                     break;
+
                 default:
                     break;
             }
@@ -471,14 +492,15 @@ int main(int argc, char** argv) {
         SDL_RenderClear(sdl_renderer);
 
         /* We are manually stepping, always do 1 step */
-        if (stepping)
+        if (stepping) {
             for (int i = 0; i < ctx.ant_num; i++)
                 ant_step(ctx.ants[i]);
-        else if (space_pressed)
+        } else if (space_pressed) {
             /* Auto-stepping, simulate N per frame */
             for (int j = 0; j < ctx.steps_per_frame; j++)
                 for (int i = 0; i < ctx.ant_num; i++)
                     ant_step(ctx.ants[i]);
+        }
 
         /* Draw cells */
         for (int y = 0; y < ctx.grid_h; y++) {
