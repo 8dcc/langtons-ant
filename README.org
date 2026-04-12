@@ -56,15 +56,15 @@ You can use the following keys:
 
 | Key         | Description                                            |
 |-------------+--------------------------------------------------------|
-| =q=           | Quit the program.                                      |
-| =ESC=         | Same as =q=.                                             |
-| =g=           | Toggle grid overlay.                                   |
-| =Left Arrow=  | Single step.                                           |
-| =Space=       | Toggle auto-stepping.                                  |
-| =Up Arrow=    | Increase number of steps per frame when auto-stepping. |
-| =Down Arrow=  | Decrease number of steps per frame when auto-stepping. |
-| =Left Click=  | Add ant at the specified position.                     |
-| =Right Click= | Remove ant at the specified position.                  |
+| ~q~ / ~ESC~     | Quit the program.                                      |
+| ~g~           | Toggle grid overlay.                                   |
+| ~f~ / ~F11~     | Toggle full-screen.                                    |
+| ~Left Arrow~  | Single step.                                           |
+| ~Space~       | Toggle auto-stepping.                                  |
+| ~Up Arrow~    | Increase number of steps per frame when auto-stepping. |
+| ~Down Arrow~  | Decrease number of steps per frame when auto-stepping. |
+| ~Left Click~  | Add ant at the specified position.                     |
+| ~Right Click~ | Remove ant at the specified position.                  |
 
 * Screenshots
 
