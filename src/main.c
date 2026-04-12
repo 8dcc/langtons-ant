@@ -531,10 +531,8 @@ int main(int argc, char** argv) {
         SDL_RenderPresent(sdl_renderer);
 
         /* If we are in a simulation, use custom delay. N fps otherwise */
-        if (space_pressed)
-            SDL_Delay(ctx.delay);
-        else
-            SDL_Delay(1000 / FPS);
+        const uint32_t delay = (space_pressed) ? ctx.delay : (1000 / FPS);
+        SDL_Delay(delay);
     }
 
     /* Free our stuff */
