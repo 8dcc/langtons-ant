@@ -386,6 +386,17 @@ int main(int argc, char** argv) {
                                 fflush(stdout);
                             }
                             break;
+                        case SDL_SCANCODE_F11:
+                        case SDL_SCANCODE_F: {
+                            /* Toggle fullscreen */
+                            uint32_t new_flags =
+                              (SDL_GetWindowFlags(sdl_window) &
+                               SDL_WINDOW_FULLSCREEN_DESKTOP)
+                                ? 0
+                                : SDL_WINDOW_FULLSCREEN_DESKTOP;
+
+                            SDL_SetWindowFullscreen(sdl_window, new_flags);
+                        } break;
                         default:
                             break;
                     }
